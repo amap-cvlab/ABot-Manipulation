@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <!-- <link rel="stylesheet" href="./static/css/fontawesome.all.min.css"> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <!-- Spline 3D viewer -->
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.52/build/spline-viewer.js"></script>
+</head>
+
+<body>
+  <!-- Fixed Spline Background for pages after hero section -->
+  <div id="page-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; pointer-events: none; opacity: 1; transition: opacity 0.8s ease-in-out;">
+    <spline-viewer url="undefined" style="width: 100%; height: 100%; border: none;"></spline-viewer>
+  </div>
+
+  <!-- <nav class="navbar" role="navigation" aria-label="main navigation"> -->
+  <!-- <div class="navbar-brand"> -->
+  <!-- <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"> -->
+  <!-- <span aria-hidden="true"></span> -->
+  <!-- <span aria-hidden="true"></span> -->
+  <!-- <span aria-hidden="true"></span> -->
+  <!-- </a> -->
+  <!-- </div> -->
+  <!-- <div class="navbar-menu"> -->
+  <!-- <div class="navbar-start" style="flex-grow: 1; justify-content: center;"> -->
+  <!-- <a class="navbar-item" href="https://github.com/thu-ml/"> -->
+  <!-- <span class="icon"> -->
+  <!-- <i class="fas fa-home"></i> -->
+  <!-- </span> -->
+  <!-- </a> -->
+
+  <!-- </div> -->
+  <!-- </nav> -->
+
+
+  <!-- Hero Section with Spline 3D Background -->
+  <section class="hero-video-section">
+    <!-- Full Width 3D Container -->
+    <div class="hero-video-container">
+      <div class="hero-video-placeholder">
+        <spline-viewer
+          url="https://prod.spline.design/GN9meKVmSkoE2QMl/scene.splinecode"
+          style="width: 100%; height: 100%; border: none;"
+        ></spline-viewer>
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.25); pointer-events: none;"></div>
+      </div>
+      
+      <!-- Overlay Content - Title, Date, and Links inside 3D scene -->
+      <div class="hero-overlay-content">
+        <div class="hero-content">
+            <h1 class="hero-title">ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning</h1>
+            
+            <!-- Author and Date Information -->
+            <div class="hero-meta">
+              <div class="hero-author">
+                <a href="#author" class="author-link">Foundation Model Team | AMAP CV Lab | Alibaba Group</a>
+              </div>
+              <span class="hero-date">February 11, 2026</span>
+            </div>
+            
+            <!-- Action Links -->
+            <div class="hero-links">
+              <span class="link-block">
+                <a href="https://github.com/amap-cvlab/ABot-Manipulation" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"> 
+                    <img src="static/svg/hf.svg" alt="huggingface" width="24" height="24">
+                  </span>
+                  <span>Model</span>
+                </a>
+              </span>
+              <!-- <span class="link-block" style="opacity: 0.6; pointer-events: none; cursor: default;">
+                <a href="#" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <svg class="svg-inline--fa fa-database fa-w-14" aria-hidden="true" focusable="false"
+                      data-prefix="fas" data-icon="database" role="img" xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 448 512" data-fa-i2svg="">
+                      <path fill="currentColor"
+                        d="M448 73.143v45.714C448 159.143 347.667 192 224 192S0 159.143 0 118.857V73.143C0 32.857 100.333 0 224 0s224 32.857 224 73.143zM448 176v102.857C448 319.143 347.667 352 224 352S0 319.143 0 278.857V176c48.125 33.143 136.208 48.572 224 48.572S399.874 209.143 448 176zm0 160v102.857C448 479.143 347.667 512 224 512S0 479.143 0 438.857V336c48.125 33.143 136.208 48.572 224 48.572S399.874 369.143 448 336z">
+                      </path>
+                    </svg>
+                  </span>
+                  <span>Data</span>
+                </a>
+              </span> -->
+              <span class="link-block">
+                <a href="https://arxiv.org/" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Technical Report</span>
+                </a>
+              </span>
+              <!-- <span class="link-block">
+                <a href="https://x.com/songming_liu/status/1971643908372550108" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"> 
+                    <i class="fa-brands fa-twitter"></i>                            
+                  </span>
+                  <span>Twitter</span>
+                </a>
+              </span>    -->
+              <!-- <span class="link-block">
+                <a href="discord.html" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"> 
+                    <i class="fa-brands fa-discord"></i>
+                  </span>
+                  <span>Discord</span>
+                </a>
+              </span> -->
+              <!-- <span class="link-block">
+                <a href="feishu.html" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"> 
+                    <svg t="1758621592506" class="icon" viewBox="0 0 1335 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4804" width="200" height="200"><path d="M616.34246923 637.06814707s83.08051941-41.33100723 179.38003464-141.42593244c20.30472345-21.08400898 101.26385431-114.00661917 215.7611347-143.8359461 25.61541119-6.6527916 107.70017706-34.31743588 241.39097699 5.7724876 4.12732837 1.24108457 0.92359808 6.76824114-1.86162726 10.33275202s-32.45580863 27.76566275-122.5499002 215.41478522c-7.2156091 15.253797-87.22227887 171.54388367-310.83399646 125.6526112-12.17994736-2.49660105-198.81888518-60.75542588-201.28662241-71.9107575zM363.78172951 90.125s-19.20795063 3.08828074-4.0263099 24.53307028c3.85313516 5.26739447 224.75178287 173.54982266 342.98674886 385.18362899 7.30219647 13.06025217 37.80979047-27.54919473 37.80979047-27.54919473s114.00661917-120.73156623 200.88254938-144.61523161c6.27757993-1.71731469 13.63750076-3.40576721 1.70288361-25.97619178-2.75636233-5.25296338-69.68834967-185.38342136-132.52187165-211.51835596z" p-id="4805" fill="#ffffff"></path><path d="M154.54350493 388.23066187s1.54413996-28.86243558 24.07127124-13.32001346c6.95584699 4.77673325 437.72769223 453.14023288 796.28572541 386.15052035 0 0 3.72325451 1.65959033-6.0899741 11.27078119-3.59337305 3.50678567-364.04189566 327.25672175-798.04633337 48.25799204 0 0-19.68418076-13.33444537-16.22068918-49.91758155z" p-id="4806" fill="#ffffff"></path></svg>
+                  </span>
+                  <span>Feishu</span>
+                </a>
+              </span> -->
+              <span class="link-block">
+                <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"> 
+                    <svg t="1758713357279" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4694" width="200" height="200"><path d="M156.09136 606.57001a457.596822 457.596822 0 0 1 221.680239-392.516385 50.844091 50.844091 0 1 1 50.844091 86.943396 355.90864 355.90864 0 0 0-138.804369 152.532274h16.77855a152.532274 152.532274 0 1 1-152.532274 152.532274z m406.752731 0a457.596822 457.596822 0 0 1 221.680239-392.007944 50.844091 50.844091 0 1 1 50.844091 86.943396 355.90864 355.90864 0 0 0-138.804369 152.532274h16.77855a152.532274 152.532274 0 1 1-152.532274 152.532274z" fill="#ffffff" p-id="4695"></path></svg>
+                  </span>
+                  <span>BibTeX</span>
+                </a>
+              </span>
+            </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- <section class="hero teaser">
+    
+  </section> -->
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">ABot-M0</h2>
+        <div class="column is-full">
+          <p class="content has-text-justified mb-4">
+            ABot-M0 is a general-purpose robotics model with the following core highlights:
+          </p>
+          <div style="margin: 2rem 0;">
+            <figure class="image" style="max-width: 960px; margin: 0 auto; border-radius: 18px; overflow: hidden; padding: 1px; background: radial-gradient(circle at top left, rgba(88,216,251,0.9), rgba(190,106,239,0.4), rgba(0,0,0,0.9)); box-shadow: 0 18px 45px rgba(0,0,0,0.45);">
+              <img src="./static/image/model.jpg" alt="ABot-M0 model overview" style="display: block; width: 100%; height: auto; border-radius: 16px;">
+            </figure>
+            <p class="video-caption" style="text-align: center; margin-top: 0.9rem; font-size: 0.95rem; color: #a0a0a0;">
+              The overview of <b>ABot-M0</b>.
+            </p>
+          </div>
+          <p class="content has-text-justified mb-4">
+            <ul>
+              <li><b>Massive & Unified Data: It integrates over 6 million open-source trajectories to form the largest unified dataset for robotic manipulation, providing a strong foundation for generalization.</li>
+              <li><b>Innovative Action Paradigm: It pioneers Action Manifold Learning (AML), which directly predicts clean actions instead of noise, resulting in a more efficient and stable model.</li>
+              <li><b>Modular 3D Perception: It supports plug-and-play modules to enhance 3D spatial understanding, improving execution precision for complex tasks.</li>
+            </ul>
+          </p>
+
+
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </section>
+
+  <section class="section" id="results">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Results</h2>
+      <div class="column is-full">
+        <!-- Table Tabs -->
+        <div class="results-tabs-container" style="margin-bottom: 3rem;">
+          <div class="results-tabs">
+            <button class="tab-btn is-active" data-tab="libero">
+              <span>LIBERO</span>
+            </button>
+            <button class="tab-btn" data-tab="libero-plus">
+              <span>LIBERO-Plus</span>
+            </button>
+            <button class="tab-btn" data-tab="robocasa">
+              <span>RoboCasa</span>
+            </button>
+            <button class="tab-btn" data-tab="robotwin">
+              <span>RoboTwin 2.0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- LIBERO Table -->
+        <div id="libero" class="tab-content is-active">
+          <div class="table-wrapper">
+            <div class="table-container">
+              <table class="results-table">
+                <caption class="table-caption">
+                  Success rates (%) on the LIBERO benchmark. ABot-M0 is one policy for all 4 suites.
+                </caption>
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>L-Spatial</th>
+                    <th>L-Object</th>
+                    <th>L-Goal</th>
+                    <th>L-Long</th>
+                    <th>Average</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Diffusion Policy</td><td>78.5</td><td>87.5</td><td>73.5</td><td>64.8</td><td>76.1</td></tr>
+                  <tr><td>OpenVLA</td><td>84.7</td><td>88.4</td><td>79.2</td><td>53.7</td><td>76.5</td></tr>
+                  <tr><td>SpatialVLA</td><td>88.2</td><td>89.9</td><td>78.6</td><td>55.5</td><td>78.1</td></tr>
+                  <tr><td>CoT-VLA</td><td>87.5</td><td>91.6</td><td>87.6</td><td>69.0</td><td>83.9</td></tr>
+                  <tr><td>π₀-Fast</td><td>96.4</td><td>96.8</td><td>88.6</td><td>60.2</td><td>85.5</td></tr>
+                  <tr><td>GR00T-N1</td><td>94.4</td><td>97.6</td><td>93.0</td><td>90.6</td><td>93.9</td></tr>
+                  <tr><td>π₀</td><td>98.0</td><td>96.8</td><td>94.4</td><td>88.4</td><td>94.4</td></tr>
+                  <tr><td>F1</td><td>98.2</td><td>97.8</td><td>95.4</td><td>91.3</td><td>95.7</td></tr>
+                  <tr><td>InternVLA-M1</td><td>98.0</td><td>99.0</td><td>93.8</td><td>92.6</td><td>95.9</td></tr>
+                  <tr><td>Discrete Diffusion VLA</td><td>97.2</td><td>98.6</td><td>97.4</td><td>92.0</td><td>96.3</td></tr>
+                  <tr><td>π₀.₅</td><td><strong>98.8</strong></td><td>98.2</td><td>98.0</td><td>92.4</td><td>96.9</td></tr>
+                  <tr><td>GR00T-N1.6</td><td>97.7</td><td>98.5</td><td>97.5</td><td>94.4</td><td>97.0</td></tr>
+                  <tr><td>OpenVLA-OFT</td><td>97.6</td><td>98.4</td><td>97.9</td><td>94.5</td><td>97.1</td></tr>
+                  <tr><td>X-VLA</td><td>98.2</td><td>98.6</td><td>97.8</td><td><strong>97.6</strong></td><td>98.1</td></tr>
+                  <tr class="ours-row">
+                    <td><strong>ABot-M0 (Ours)</strong></td>
+                    <td><strong>98.8</strong></td>
+                    <td><strong>99.8</strong></td>
+                    <td><strong>99.0</strong></td>
+                    <td>96.6</td>
+                    <td><strong>98.6</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIBERO-Plus Table -->
+        <div id="libero-plus" class="tab-content" style="display: none;">
+          <div class="table-wrapper">
+            <div class="table-container">
+              <table class="results-table">
+                <caption class="table-caption">
+                  Zero-shot performance comparison on LIBERO-Plus. One ABot-M0 for all 4 suites is trained only on the standard LIBERO dataset (no LIBERO-Plus data fine-tuning).
+                </caption>
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>Camera</th>
+                    <th>Robot</th>
+                    <th>Language</th>
+                    <th>Light</th>
+                    <th>Background</th>
+                    <th>Noise</th>
+                    <th>Layout</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>OpenVLA</td><td>0.8</td><td>3.5</td><td>23.0</td><td>8.1</td><td>34.8</td><td>15.2</td><td>28.5</td><td>15.6</td></tr>
+                  <tr><td>OpenVLA-OFT</td><td>56.4</td><td>31.9</td><td>79.5</td><td>88.7</td><td>93.3</td><td>75.8</td><td>74.2</td><td>69.6</td></tr>
+                  <tr><td>OpenVLA-OFT_w</td><td>10.4</td><td>38.7</td><td>70.5</td><td>76.8</td><td><strong>93.6</strong></td><td>49.9</td><td>69.9</td><td>55.8</td></tr>
+                  <tr><td>NORA</td><td>2.2</td><td>37.0</td><td>65.1</td><td>45.7</td><td>58.6</td><td>12.8</td><td>62.1</td><td>39.0</td></tr>
+                  <tr><td>WorldVLA</td><td>0.1</td><td>27.9</td><td>41.6</td><td>43.7</td><td>17.1</td><td>10.9</td><td>38.0</td><td>25.0</td></tr>
+                  <tr><td>UniVLA</td><td>1.8</td><td>46.2</td><td>69.6</td><td>69.0</td><td>81.0</td><td>21.2</td><td>31.9</td><td>42.9</td></tr>
+                  <tr><td>π₀</td><td>13.8</td><td>6.0</td><td>58.8</td><td>85.0</td><td>81.4</td><td>79.0</td><td>68.9</td><td>53.6</td></tr>
+                  <tr><td>π₀-Fast</td><td><strong>65.1</strong></td><td>21.6</td><td>61.0</td><td>73.2</td><td>73.2</td><td>74.4</td><td>68.8</td><td>61.6</td></tr>
+                  <tr><td>RIPT-VLA</td><td>55.2</td><td>31.2</td><td>77.6</td><td>88.4</td><td>91.6</td><td>73.5</td><td>74.2</td><td>68.4</td></tr>
+                  <tr><td>Openvla-OFT_m</td><td>55.6</td><td>21.7</td><td>81.0</td><td>92.7</td><td>91.0</td><td>78.6</td><td>68.7</td><td>67.9</td></tr>
+                  <tr class="ours-row">
+                    <td><strong>ABot-M0 (Ours)</strong></td>
+                    <td>60.4</td>
+                    <td><strong>67.9</strong></td>
+                    <td><strong>86.4</strong></td>
+                    <td><strong>96.2</strong></td>
+                    <td>91.6</td>
+                    <td><strong>86.4</strong></td>
+                    <td><strong>82.6</strong></td>
+                    <td><strong>80.5</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- RoboCasa Table -->
+        <div id="robocasa" class="tab-content" style="display: none;">
+          <div class="table-wrapper">
+            <div class="table-container">
+              <table class="results-table">
+                <caption class="table-caption">
+                  RoboCasa GR1 Tabletop Tasks Evaluation Results. A single model was trained for all 24 tasks. Results are reported over 50 rollouts per task.
+                </caption>
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>GR00T-N1.6</th>
+                    <th>Qwen3GR00T</th>
+                    <th>Qwen3PI</th>
+                    <th>Qwen3OFT</th>
+                    <th>Qwen3FAST</th>
+                    <th class="ours-col">ABot-M0 (Ours)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>PnPBottleToCabinetClose</td><td>51.5</td><td>46.0</td><td>26.0</td><td>30.0</td><td>38.0</td><td class="ours-cell"><strong>86.0</strong></td></tr>
+                  <tr><td>PnPCanToDrawerClose</td><td>13.0</td><td><strong>80.0</strong></td><td>62.0</td><td>76.0</td><td>44.0</td><td class="ours-cell">74.0</td></tr>
+                  <tr><td>PnPCupToDrawerClose</td><td>8.5</td><td>54.0</td><td>42.0</td><td>44.0</td><td><strong>56.0</strong></td><td class="ours-cell">48.0</td></tr>
+                  <tr><td>PnPMilkToMicrowaveClose</td><td>14.0</td><td>48.0</td><td><strong>50.0</strong></td><td>44.0</td><td>44.0</td><td class="ours-cell">46.0</td></tr>
+                  <tr><td>PnPPotatoToMicrowaveClose</td><td>41.5</td><td>28.0</td><td>42.0</td><td>32.0</td><td>14.0</td><td class="ours-cell"><strong>50.0</strong></td></tr>
+                  <tr><td>PnPWineToCabinetClose</td><td>16.5</td><td>46.0</td><td>32.0</td><td>36.0</td><td>14.0</td><td class="ours-cell"><strong>66.0</strong></td></tr>
+                  <tr><td>PnPNovelFromCuttingboardToBasket</td><td>58.0</td><td>48.0</td><td>40.0</td><td>50.0</td><td>54.0</td><td class="ours-cell"><strong>70.0</strong></td></tr>
+                  <tr><td>PnPNovelFromCuttingboardToCardboardbox</td><td>46.5</td><td>40.0</td><td>46.0</td><td>40.0</td><td>42.0</td><td class="ours-cell"><strong>58.0</strong></td></tr>
+                  <tr><td>PnPNovelFromCuttingboardToPan</td><td>68.5</td><td>68.0</td><td>60.0</td><td>70.0</td><td>58.0</td><td class="ours-cell"><strong>76.0</strong></td></tr>
+                  <tr><td>PnPNovelFromCuttingboardToPot</td><td>65.0</td><td>52.0</td><td>40.0</td><td>54.0</td><td>58.0</td><td class="ours-cell"><strong>66.0</strong></td></tr>
+                  <tr><td>PnPNovelFromCuttingboardToTieredbasket</td><td>46.5</td><td><strong>56.0</strong></td><td>44.0</td><td>38.0</td><td>40.0</td><td class="ours-cell">38.0</td></tr>
+                  <tr><td>PnPNovelFromPlacematToBasket</td><td><strong>58.5</strong></td><td>42.0</td><td>44.0</td><td>32.0</td><td>36.0</td><td class="ours-cell">52.0</td></tr>
+                  <tr><td>PnPNovelFromPlacematToBowl</td><td>57.5</td><td>44.0</td><td>52.0</td><td>58.0</td><td>38.0</td><td class="ours-cell"><strong>66.0</strong></td></tr>
+                  <tr><td>PnPNovelFromPlacematToPlate</td><td><strong>63.0</strong></td><td>48.0</td><td>50.0</td><td>52.0</td><td>42.0</td><td class="ours-cell">60.0</td></tr>
+                  <tr><td>PnPNovelFromPlacematToTieredshelf</td><td><strong>28.5</strong></td><td>18.0</td><td>28.0</td><td>24.0</td><td>18.0</td><td class="ours-cell">26.0</td></tr>
+                  <tr><td>PnPNovelFromPlateToBowl</td><td>57.0</td><td><strong>60.0</strong></td><td>52.0</td><td><strong>60.0</strong></td><td>52.0</td><td class="ours-cell">54.0</td></tr>
+                  <tr><td>PnPNovelFromPlateToCardboardbox</td><td>43.5</td><td><strong>50.0</strong></td><td>40.0</td><td><strong>50.0</strong></td><td>30.0</td><td class="ours-cell">48.0</td></tr>
+                  <tr><td>PnPNovelFromPlateToPan</td><td>51.0</td><td>54.0</td><td>36.0</td><td><strong>66.0</strong></td><td>48.0</td><td class="ours-cell"><strong>66.0</strong></td></tr>
+                  <tr><td>PnPNovelFromPlateToPlate</td><td><strong>78.7</strong></td><td>70.0</td><td>48.0</td><td>68.0</td><td>50.0</td><td class="ours-cell">64.0</td></tr>
+                  <tr><td>PnPNovelFromTrayToCardboardbox</td><td>51.5</td><td>38.0</td><td>34.0</td><td>44.0</td><td>28.0</td><td class="ours-cell"><strong>54.0</strong></td></tr>
+                  <tr><td>PnPNovelFromTrayToPlate</td><td><strong>71.0</strong></td><td>56.0</td><td>64.0</td><td>56.0</td><td>34.0</td><td class="ours-cell">68.0</td></tr>
+                  <tr><td>PnPNovelFromTrayToPot</td><td><strong>64.5</strong></td><td>50.0</td><td>44.0</td><td>62.0</td><td>46.0</td><td class="ours-cell">64.0</td></tr>
+                  <tr><td>PnPNovelFromTrayToTieredbasket</td><td>57.0</td><td>36.0</td><td>50.0</td><td>54.0</td><td>36.0</td><td class="ours-cell"><strong>60.0</strong></td></tr>
+                  <tr><td>PnPNovelFromTrayToTieredshelf</td><td>31.5</td><td>16.0</td><td>28.0</td><td>30.0</td><td>16.0</td><td class="ours-cell"><strong>38.0</strong></td></tr>
+                  <tr class="avg-row">
+                    <td><strong>Average</strong></td>
+                    <td>47.6</td>
+                    <td>47.8</td>
+                    <td>43.9</td>
+                    <td>48.8</td>
+                    <td>39.0</td>
+                    <td class="ours-cell"><strong>58.3</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- RoboTwin 2.0 Table -->
+        <div id="robotwin" class="tab-content" style="display: none;">
+          <div class="table-wrapper">
+            <div class="table-container">
+              <table class="results-table">
+                <caption class="table-caption">
+                  Evaluation on RoboTwin 2.0 Simulation (Clean vs Randomized, 50+ tasks).
+                </caption>
+                <thead>
+                  <tr>
+                    <th>Simulation Task</th>
+                    <th colspan="2">π₀.₅</th>
+                    <th colspan="2">X-VLA</th>
+                    <th colspan="2" class="ours-col">ABot-M0 (Ours)</th>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th>Clean</th>
+                    <th>Rand.</th>
+                    <th>Clean</th>
+                    <th>Rand.</th>
+                    <th class="ours-col">Clean</th>
+                    <th class="ours-col">Rand.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td style="font-style: italic;">Place Dual Shoes</td><td>12</td><td>7</td><td>79</td><td><strong>88</strong></td><td class="ours-cell">75</td><td class="ours-cell">79</td></tr>
+                  <tr><td style="font-style: italic;">Move Stapler Pad</td><td>16</td><td>18</td><td><strong>78</strong></td><td>73</td><td class="ours-cell">49</td><td class="ours-cell">72</td></tr>
+                  <tr><td style="font-style: italic;">Stack Blocks Two</td><td>48</td><td>56</td><td>92</td><td>87</td><td class="ours-cell"><strong>100</strong></td><td class="ours-cell">98</td></tr>
+                  <tr><td style="font-style: italic;">Scan Object</td><td>42</td><td>38</td><td>14</td><td>36</td><td class="ours-cell"><strong>100</strong></td><td class="ours-cell">80</td></tr>
+                  <tr><td style="font-style: italic;">Place Object Stand</td><td>74</td><td>65</td><td>86</td><td>88</td><td class="ours-cell"><strong>100</strong></td><td class="ours-cell">94</td></tr>
+                  <tr><td style="font-style: italic;">Place Fan</td><td>25</td><td>36</td><td>80</td><td>75</td><td class="ours-cell">84</td><td class="ours-cell"><strong>91</strong></td></tr>
+                  <tr><td style="font-style: italic;">Move Pillbottle Pad</td><td>33</td><td>29</td><td>73</td><td>71</td><td class="ours-cell">93</td><td class="ours-cell"><strong>100</strong></td></tr>
+                  <tr><td style="font-style: italic;">Pick Dual Bottles</td><td>10</td><td>6</td><td>47</td><td>36</td><td class="ours-cell">77</td><td class="ours-cell"><strong>100</strong></td></tr>
+                  <tr><td style="font-style: italic;">Blocks Ranking Rgb</td><td>43</td><td>35</td><td>83</td><td>83</td><td class="ours-cell">68</td><td class="ours-cell"><strong>85</strong></td></tr>
+                  <tr><td style="font-style: italic;">......(50 tasks)</td><td>...</td><td>...</td><td>...</td><td>...</td><td class="ours-cell">...</td><td class="ours-cell">...</td></tr>
+                  <tr><td style="font-style: italic;">Turn Switch</td><td>5</td><td>6</td><td>40</td><td>61</td><td class="ours-cell">52</td><td class="ours-cell"><strong>81</strong></td></tr>
+                  <tr><td style="font-style: italic;">Pick Diverse Bottles</td><td>5</td><td>3</td><td>58</td><td>36</td><td class="ours-cell">70</td><td class="ours-cell"><strong>93</strong></td></tr>
+                  <tr><td style="font-style: italic;">Place Bread Basket</td><td>48</td><td>56</td><td>81</td><td>71</td><td class="ours-cell"><strong>91</strong></td><td class="ours-cell">87</td></tr>
+                  <tr><td style="font-style: italic;">Stack Blocks Three</td><td>15</td><td>16</td><td>6</td><td>10</td><td class="ours-cell"><strong>72</strong></td><td class="ours-cell">49</td></tr>
+                  <tr><td style="font-style: italic;">Put Bottles Dustbin</td><td>12</td><td>9</td><td>74</td><td><strong>77</strong></td><td class="ours-cell">74</td><td class="ours-cell">70</td></tr>
+                  <tr><td style="font-style: italic;">Place Can Basket</td><td>19</td><td>25</td><td>49</td><td>52</td><td class="ours-cell">45</td><td class="ours-cell"><strong>66</strong></td></tr>
+                  <tr><td style="font-style: italic;">Stamp Seal</td><td>36</td><td>23</td><td>76</td><td><strong>82</strong></td><td class="ours-cell">76</td><td class="ours-cell">76</td></tr>
+                  <tr><td style="font-style: italic;">Handover Block</td><td>18</td><td>19</td><td>73</td><td>37</td><td class="ours-cell"><strong>93</strong></td><td class="ours-cell">69</td></tr>
+                  <tr><td style="font-style: italic;">Stack Bowls Three</td><td>33</td><td>35</td><td>76</td><td>86</td><td class="ours-cell"><strong>100</strong></td><td class="ours-cell">88</td></tr>
+                  <tr><td style="font-style: italic;">Place Object Basket</td><td>43</td><td>36</td><td>44</td><td>39</td><td class="ours-cell"><strong>97</strong></td><td class="ours-cell">95</td></tr>
+                  <tr><td style="font-style: italic;">Open Microwave</td><td>35</td><td>37</td><td>79</td><td>71</td><td class="ours-cell"><strong>93</strong></td><td class="ours-cell">49</td></tr>
+                  <tr class="avg-row">
+                    <td><strong>Average</strong></td>
+                    <td>42.98</td>
+                    <td>43.84</td>
+                    <td>72.80</td>
+                    <td>72.84</td>
+                    <td class="ours-cell">80.42</td>
+                    <td class="ours-cell"><strong>81.16</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dataset Video Cases -->
+  <section class="section" id="dataset-videos">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Dataset Video Cases</h2>
+      <p class="content has-text-justified mb-4">
+        We showcase representative rollouts from the four benchmark suites used to evaluate <b>ABot-M0</b>.
+      </p>
+
+      <!-- LIBERO -->
+      <div class="dataset-block">
+        <h3 class="title is-4 dataset-title">LIBERO</h3>
+        <div class="dataset-grid">
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/libero/libero_spatial.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+          
+            </div>
+          </div>
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/libero/libero_object.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+          
+            </div>
+          </div>
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/libero/libero_goal.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+         
+            </div>
+          </div>
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/libero/libero_10.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+            
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIBERO-Plus -->
+      <div class="dataset-block">
+        <h3 class="title is-4 dataset-title">LIBERO-Plus</h3>
+        <div class="dataset-grid">
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/libero-plus/plus_spatial.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+             
+            </div>
+          </div>
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/libero-plus/plus_object.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+             
+            </div>
+          </div>
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/libero-plus/plus_goal.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+            
+            </div>
+          </div>
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/libero-plus/plus_10.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+            
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RoboCasa -->
+      <div class="dataset-block">
+        <h3 class="title is-4 dataset-title">RoboCasa</h3>
+        <div class="dataset-grid">
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/robocasa/robocasa_casa1.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+          
+            </div>
+          </div>
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/robocasa/robocasa_case2.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+             
+            </div>
+          </div>
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/robocasa/robocasa_case3.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+          
+            </div>
+          </div>
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/robocasa/robocasa_case4.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RoboTwin 2.0 -->
+      <div class="dataset-block">
+        <h3 class="title is-4 dataset-title">RoboTwin 2.0</h3>
+        <div class="dataset-grid">
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/robotwin/robotwin1.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+          
+            </div>
+          </div>
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/robotwin/robotwin2.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+         
+            </div>
+          </div>
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/robotwin/robotwin3.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+
+            </div>
+          </div>
+          <div class="dataset-card">
+            <div class="dataset-card-inner">
+              <video class="dataset-video" src="./static/videos/robotwin/robotwin4.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
+           
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <style>
+    /* Page background styling */
+    #page-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    #page-background spline-viewer {
+      width: 100% !important;
+      height: 100% !important;
+      min-height: 100vh;
+    }
+    /* Ensure all sections after hero are above background */
+    .section:not(.hero-video-section) {
+      position: relative;
+      z-index: 1;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Dataset video section */
+    .dataset-block {
+      margin-top: 2.5rem;
+    }
+    .dataset-title {
+      color: #ffffff;
+      margin-bottom: 1.25rem;
+    }
+    .dataset-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+    .dataset-card {
+      background: radial-gradient(circle at top left, rgba(88, 216, 251, 0.8), rgba(190, 106, 239, 0.5), rgba(0, 0, 0, 0.9));
+      border-radius: 18px;
+      padding: 1px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
+    }
+    .dataset-card-inner {
+      background: rgba(0, 0, 0, 0.9);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .dataset-video {
+      width: 100%;
+      display: block;
+      background: #000;
+    }
+    .dataset-caption {
+      padding: 0.75rem 1rem 1rem;
+      font-size: 0.85rem;
+      color: #d0d0d0;
+      margin: 0;
+    }
+
+    @media (max-width: 1024px) {
+      .dataset-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 600px) {
+      .dataset-grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+      }
+    }
+
+    /* Results Tabs Styling */
+    .results-tabs-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+    .results-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+      padding: 0.5rem;
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    .tab-btn {
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .tab-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(88, 216, 251, 0.15) 0%, rgba(190, 106, 239, 0.15) 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .tab-btn:hover::before {
+      opacity: 1;
+    }
+    .tab-btn.is-active {
+      background: linear-gradient(135deg, rgba(88, 216, 251, 0.2) 0%, rgba(190, 106, 239, 0.2) 100%);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(88, 216, 251, 0.3);
+      transform: translateY(-2px);
+    }
+    .tab-btn.is-active::before {
+      opacity: 1;
+    }
+    .tab-btn span {
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Table Wrapper Styling */
+    .table-wrapper {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      margin: 2rem 0;
+    }
+    .table-container {
+      overflow-x: auto;
+      border-radius: 12px;
+    }
+    
+    /* Table Styling */
+    .results-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.9rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .table-caption {
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-align: left;
+      font-size: 1.05rem;
+      color: #e0e0e0;
+      padding: 0 0.5rem;
+    }
+    .results-table thead {
+      background: linear-gradient(135deg, rgba(88, 216, 251, 0.15) 0%, rgba(190, 106, 239, 0.15) 100%);
+    }
+    .results-table th {
+      padding: 1rem 0.75rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid rgba(88, 216, 251, 0.3);
+    }
+    .results-table th:first-child {
+      border-top-left-radius: 12px;
+    }
+    .results-table th:last-child {
+      border-top-right-radius: 12px;
+    }
+    .results-table th:not(:first-child) {
+      text-align: center;
+    }
+    .results-table tbody tr {
+      transition: all 0.2s ease;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .results-table tbody tr:hover {
+      background: linear-gradient(90deg, rgba(88, 216, 251, 0.08) 0%, rgba(190, 106, 239, 0.08) 100%);
+      transform: scale(1.01);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .results-table td {
+      padding: 0.75rem;
+      color: #fff;
+      text-align: left;
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .results-table td:not(:first-child) {
+      text-align: center;
+    }
+    .results-table tbody tr:last-child td:first-child {
+      border-bottom-left-radius: 12px;
+    }
+    .results-table tbody tr:last-child td:last-child {
+      border-bottom-right-radius: 12px;
+    }
+    /* Normalize strong tags inside body so numbers are not bold */
+    .results-table tbody strong {
+      font-weight: 400;
+      color: #fff;
+    }
+    
+    /* Ours Column Styling */
+    .ours-col {
+      background: linear-gradient(135deg, rgba(255, 165, 0, 0.2) 0%, rgba(255, 140, 0, 0.15) 100%) !important;
+      border-left: 2px solid rgba(255, 165, 0, 0.4);
+      border-right: 2px solid rgba(255, 165, 0, 0.4);
+    }
+    .ours-cell {
+      background: linear-gradient(135deg, rgba(255, 165, 0, 0.15) 0%, rgba(255, 140, 0, 0.1) 100%) !important;
+      border-left: 1px solid rgba(255, 165, 0, 0.3);
+      border-right: 1px solid rgba(255, 165, 0, 0.3);
+      font-weight: 400;
+      color: #fff !important;
+    }
+    .ours-row {
+      background: linear-gradient(135deg, rgba(255, 165, 0, 0.25) 0%, rgba(255, 140, 0, 0.2) 100%) !important;
+      border-top: 2px solid rgba(255, 165, 0, 0.5);
+      border-bottom: 2px solid rgba(255, 165, 0, 0.5);
+    }
+    .ours-row td {
+      color: #fff;
+      border-top: 2px solid rgba(255, 165, 0, 0.3);
+    }
+    .ours-row td:first-child strong {
+      font-weight: 600;
+    }
+    .avg-row {
+      background: linear-gradient(135deg, rgba(100, 100, 100, 0.15) 0%, rgba(80, 80, 80, 0.1) 100%) !important;
+      border-top: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .avg-row td {
+      color: #fff;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .results-tabs {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+      }
+      .tab-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+      }
+      .table-wrapper {
+        padding: 1rem;
+      }
+      .results-table {
+        font-size: 0.75rem;
+      }
+      .results-table th,
+      .results-table td {
+        padding: 0.5rem 0.4rem;
+      }
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const targetTab = this.getAttribute('data-tab');
+          
+          // Remove active class from all tabs
+          tabButtons.forEach(b => b.classList.remove('is-active'));
+          // Hide all tab contents
+          tabContents.forEach(content => {
+            content.style.display = 'none';
+            content.classList.remove('is-active');
+          });
+          
+          // Add active class to clicked tab
+          this.classList.add('is-active');
+          // Show target tab content
+          const targetContent = document.getElementById(targetTab);
+          if (targetContent) {
+            targetContent.style.display = 'block';
+            targetContent.classList.add('is-active');
+          }
+        });
+      });
+    });
+  </script>
+
+<section class="section" id="author">
+    <div class="container is-max-desktop">
+        <div class="column is-full">
+          <h2 class="title is-3">Author Team</h2>
+          <p class="content mb-4">
+            <b>Core Team</b>
+          </p>
+          <p class="content has-text-justified mb-4">
+            Author contributions in the following areas are as follows:
+            <ul style="list-style-type: disc; margin-left: 2%; margin-bottom: 2%;">
+              <li>Data Collection & Analysis: Yandan Yang, Haoyun Liu, Ronghan Chen, Yuzhi Chen, Dekang Qi</li>
+              <li>Data Standardization: Yandan Yang, Tong lin, Xinyuan Chang</li>
+              <li>Data Pipeline: Tong Lin, Shuang Zeng, Dongjie Huo</li>
+              <li>Model Architecture: Shuang Zeng, Junjin Xiao</li>
+              <li>Training: Shuang Zeng, Tong Lin, Junjin Xiao</li>
+              <li>Evaluation: Junjin Xiao, Shuang Zeng, Tong Lin</li>
+              <li>Project Lead: Xinyuan Chang, Feng Xiong</li>
+              <li>Advisor: Mu Xu†, Zhiheng Ma, Xing Wei</li>
+            </ul>
+          </p>
+
+          
+        </div>
+    </div>
+    <!--/ Abstract. -->
+  </section>
+
+<section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+        <h2 class="title is-3">Citation</h2>
+        <p class="content has-text-justified mb-4">
+            If you find our work helpful, please cite us:
+        </p>
+        <div class="bibtex-container">
+            <pre><code id="bibtex-code">
+              ........
+              
+            </code></pre>
+            <button onclick="copyToClipboard()" class="copy-button">
+                <!-- 粘贴图标，可以使用Font Awesome 图标库 -->
+                <i class="fa fa-copy" aria-hidden="true"></i>
+            </button>
+        </div>
+        <p class="content has-text-justified mb-4">
+            Thank you!
+        </p>
+    </div>
+</section>
+
+<!-- 引入Font Awesome样式表 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<script>
+function copyToClipboard() {
+    var copyText = document.getElementById("bibtex-code").innerText;
+    navigator.clipboard.writeText(copyText).then(function() {
+        alert("Copied to clipboard!");
+    }, function(err) {
+        console.error('Unable to copy text:', err);
+    });
+}
+</script>
+
+
+  <footer class="footer">
+    <div class="container">
+      <!-- <div class="content has-text-centered">
+        <p>We borrowed the page template from <a href="https://nerfies.github.io/"><span class="dnerf">Nerfies</span></a>.</p>
+      </div> -->
+    </div>
+  </footer>
+
+  <!-- Dataset Video Carousel JavaScript -->
+  <script src="./static/js/carousel.js"></script>
+  
+  <!-- Apple-style button glow effect -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add mouse tracking glow effect to all dark buttons
+      const buttons = document.querySelectorAll('.button.is-dark');
+      
+      buttons.forEach(button => {
+        button.addEventListener('mousemove', function(e) {
+          const rect = button.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          // Update the position of the glow effect
+          button.style.setProperty('--mouse-x', x + 'px');
+          button.style.setProperty('--mouse-y', y + 'px');
+          
+          // Add active class for gradient border
+          button.classList.add('glow-active');
+        });
+        
+        button.addEventListener('mouseleave', function() {
+          // Remove active class when mouse leaves
+          button.classList.remove('glow-active');
+        });
+        
+        button.addEventListener('mouseenter', function(e) {
+          const rect = button.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          button.style.setProperty('--mouse-x', x + 'px');
+          button.style.setProperty('--mouse-y', y + 'px');
+        });
+      });
+
+      // Control page background Spline viewer visibility
+      const pageBackground = document.getElementById('page-background');
+      const heroSection = document.querySelector('.hero-video-section');
+      
+      function updateBackgroundVisibility() {
+        if (!heroSection || !pageBackground) return;
+        
+        const heroRect = heroSection.getBoundingClientRect();
+        const heroBottom = heroRect.bottom;
+        const scrollY = window.scrollY || window.pageYOffset;
+        const windowHeight = window.innerHeight;
+        
+        // Show background when scrolled past hero section
+        if (scrollY > heroBottom - windowHeight * 0.5) {
+          pageBackground.style.opacity = '1';
+        } else {
+          pageBackground.style.opacity = '0';
+        }
+      }
+      
+      // Update on scroll with throttling
+      let ticking = false;
+      function handleScroll() {
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            updateBackgroundVisibility();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+      
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('resize', updateBackgroundVisibility);
+      
+      // Initial check
+      setTimeout(updateBackgroundVisibility, 100);
+    });
+  </script>
+
+</body>
+
+</html>
