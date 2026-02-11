@@ -27,9 +27,9 @@
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
-  <!-- <link rel="stylesheet" href="./static/css/fontawesome.all.min.css"> -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/premium.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
@@ -43,8 +43,8 @@
 
 <body>
   <!-- Fixed Spline Background for pages after hero section -->
-  <div id="page-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -1; pointer-events: none; opacity: 1; transition: opacity 0.8s ease-in-out;">
-    <spline-viewer url="undefined" style="width: 100%; height: 100%; border: none;"></spline-viewer>
+  <div id="page-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 0; pointer-events: none; opacity: 1; transition: opacity 0.8s ease-in-out;">
+    <spline-viewer url="https://prod.spline.design/1M9l72twnpJGjItI/scene.splinecode" style="width: 100%; height: 100%; border: none;"></spline-viewer>
   </div>
 
   <!-- <nav class="navbar" role="navigation" aria-label="main navigation"> -->
@@ -87,7 +87,7 @@
             <!-- Author and Date Information -->
             <div class="hero-meta">
               <div class="hero-author">
-                <a href="#author" class="author-link">Foundation Model Team | AMAP CV Lab | Alibaba Group</a>
+                <a href="#author" class="author-link">AMAP CV Lab</a>
               </div>
               <span class="hero-date">February 11, 2026</span>
             </div>
@@ -107,7 +107,7 @@
                   <span class="icon"> 
                     <img src="static/svg/hf.svg" alt="huggingface" width="24" height="24">
                   </span>
-                  <span>Model</span>
+                  <span>Model (Coming soon)</span>
                 </a>
               </span>
               <!-- <span class="link-block" style="opacity: 0.6; pointer-events: none; cursor: default;">
@@ -125,7 +125,7 @@
                 </a>
               </span> -->
               <span class="link-block">
-                <a href="https://arxiv.org/" class="external-link button is-normal is-rounded is-dark">
+                <a href="https://github.com/amap-cvlab/ABot-Manipulation/blob/main/assets/ABot-M0_Technical_Report.pdf" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                     <i class="fas fa-file-pdf"></i>
                   </span>
@@ -183,28 +183,90 @@
           <p class="content has-text-justified mb-4">
             ABot-M0 is a general-purpose robotics model with the following core highlights:
           </p>
-          <div style="margin: 2rem 0;">
-            <figure class="image" style="max-width: 960px; margin: 0 auto; border-radius: 18px; overflow: hidden; padding: 1px; background: radial-gradient(circle at top left, rgba(88,216,251,0.9), rgba(190,106,239,0.4), rgba(0,0,0,0.9)); box-shadow: 0 18px 45px rgba(0,0,0,0.45);">
-              <img src="./static/image/model.jpg" alt="ABot-M0 model overview" style="display: block; width: 100%; height: auto; border-radius: 16px;">
+          <div style="margin: var(--spacing-3xl) 0;">
+            <figure class="image" style="max-width: 1000px; margin: 0 auto;">
+              <img src="./static/image/model.jpg" alt="ABot-M0 model overview">
             </figure>
-            <p class="video-caption" style="text-align: center; margin-top: 0.9rem; font-size: 0.95rem; color: #a0a0a0;">
+            <p class="video-caption">
               The overview of <b>ABot-M0</b>.
             </p>
           </div>
           <p class="content has-text-justified mb-4">
             <ul>
-              <li><b>Massive & Unified Data: It integrates over 6 million open-source trajectories to form the largest unified dataset for robotic manipulation, providing a strong foundation for generalization.</li>
-              <li><b>Innovative Action Paradigm: It pioneers Action Manifold Learning (AML), which directly predicts clean actions instead of noise, resulting in a more efficient and stable model.</li>
-              <li><b>Modular 3D Perception: It supports plug-and-play modules to enhance 3D spatial understanding, improving execution precision for complex tasks.</li>
+              <li><b>Massive & Unified Data:</b> It integrates over 6 million open-source trajectories to form the largest unified dataset for robotic manipulation, providing a strong foundation for generalization.</li>
+              <li><b>Innovative Action Paradigm:</b> It pioneers Action Manifold Learning (AML), which directly predicts clean actions instead of noise, resulting in a more efficient and stable model.</li>
+              <li><b>Modular 3D Perception:</b> It supports plug-and-play modules to enhance 3D spatial understanding, improving execution precision for complex tasks.</li>
             </ul>
           </p>
 
+
+          <!-- UniACT Dataset Overview -->
+          <div style="margin: var(--spacing-5xl) 0 var(--spacing-2xl);">
+            <h2 class="title is-3">UniACT-dataset</h2>
+            <figure class="image" style="max-width: 1000px; margin: 0 auto;">
+              <img src="./static/image/dataset.jpg" alt="UniACT-dataset overview">
+            </figure>
+            <p class="video-caption">
+              <b>UniACT-dataset</b>: a large-scale unified robotic manipulation dataset behind ABot-M0.
+            </p>
+          </div>
+
+          <p class="content has-text-justified mb-3">
+            Robotic data suffers from fragmentation and inconsistent representations. To address this challenge, we constructed <b>UniACT-dataset</b>, one of the largest non-private robotic manipulation datasets to date.
+          </p>
+
+          <p class="content has-text-justified mb-2">
+            <b>Data Sources and Scale</b>
+          </p>
+          <ul class="content" style="margin-bottom: var(--spacing-xl);">
+            <li><b>Integration:</b> It aggregates 6 major public datasets, including OXE, OXE-AugE, and AgiBot-Beta.</li>
+            <li><b>Scale:</b> The dataset comprises over 6 million trajectories, amounting to 9,500+ hours of interaction data.</li>
+            <li><b>Diversity:</b> It covers more than 20 different robot morphologies.</li>
+          </ul>
+
+          <p class="content has-text-justified mb-2">
+            <b>Systematic Data Curation Pipeline</b>
+          </p>
+          <ul class="content" style="margin-bottom: var(--spacing-2xl);">
+            <li><b>Cleaning:</b> We filter out data with invalid instructions, visual anomalies, and erroneous actions.</li>
+            <li><b>Standardization:</b> All actions are unified into delta actions in the end-effector coordinate frame, with rotations adopting the more stable rotation vector representation.</li>
+            <li><b>Unification:</b> A “pad-to-dual” strategy is employed to enable a single model to handle both single-arm and dual-arm tasks.</li>
+          </ul>
+
+
+
+
+
+          <!-- Action Manifold Learning (AML) -->
+          <div style="margin: var(--spacing-5xl) 0 var(--spacing-2xl);">
+            <h2 class="title is-3">Action Manifold Learning (AML)</h2>
+            <figure class="image" style="max-width: 1000px; margin: 0 auto;">
+              <img src="./static/image/manifold.jpg" alt="Action Manifold Learning overview">
+            </figure>
+            <p class="video-caption">
+              <b>Action Manifold Learning (AML)</b>: learning robot actions on a low-dimensional, structured manifold.
+            </p>
+          </div>
+
+          <p class="content has-text-justified mb-3">
+            Conventional diffusion models typically learn to predict noise, an approach that is inefficient and unstable for robotic control. We propose the <b>Action Manifold Hypothesis</b>: effective robot actions are not randomly distributed in a high-dimensional space, but rather lie on a low-dimensional, smooth manifold shaped by physical laws and task constraints.
+          </p>
+
+          <p class="content has-text-justified mb-2">
+            Building on this, we design <b>Action Manifold Learning (AML)</b>:
+          </p>
+          <ul class="content" style="margin-bottom: var(--spacing-2xl);">
+            <li><b>Direct Action Prediction (a-prediction):</b> The model directly outputs clean action sequences instead of high-dimensional, unstructured noise.</li>
+            <li><b>Improved Efficiency and Stability:</b> The learning objective shifts from “fitting noise” to “projecting onto the feasible manifold.” This enables the model to learn meaningful action structures more efficiently, thereby boosting decoding speed and policy stability.</li>
+            <li><b>Enhanced Scalability:</b> The advantages of AML become more pronounced when handling higher-dimensional actions (e.g., for dexterous hands or whole-body control), laying a foundation for the long-term development of embodied intelligence.</li>
+          </ul>
 
         </div>
       </div>
     </div>
     <!--/ Abstract. -->
   </section>
+  
 
   <section class="section" id="results">
     <div class="container is-max-desktop">
@@ -451,7 +513,7 @@
   <!-- Dataset Video Cases -->
   <section class="section" id="dataset-videos">
     <div class="container is-max-desktop">
-      <h2 class="title is-3">Dataset Video Cases</h2>
+      <h2 class="title is-3">Video</h2>
       <p class="content has-text-justified mb-4">
         We showcase representative rollouts from the four benchmark suites used to evaluate <b>ABot-M0</b>.
       </p>
@@ -584,6 +646,46 @@
   </section>
 
   <style>
+    /* Hero section adjustments - text positioned lower with reduced spacing */
+    .hero-overlay-content {
+      align-items: flex-end !important;
+      justify-content: flex-start !important;
+      padding-bottom: 8vh !important;
+      padding-left: var(--spacing-3xl) !important;
+    }
+    .hero-content {
+      text-align: left !important;
+      max-width: 1100px !important;
+      padding: var(--spacing-lg) !important;
+    }
+    .hero-meta {
+      justify-content: flex-start !important;
+    }
+    .hero-links {
+      justify-content: flex-start !important;
+    }
+    .hero-title {
+      font-size: clamp(2.25rem, 4.5vw, 3.5rem) !important;
+      line-height: 1.0 !important;
+      margin-bottom: var(--spacing-md) !important;
+    }
+    .hero-meta {
+      margin-bottom: var(--spacing-md) !important;
+      gap: var(--spacing-sm) !important;
+    }
+    .hero-links {
+      gap: var(--spacing-xs) !important;
+    }
+    
+    /* Table header color fix - ensure all headers are white and visible */
+    .results-table th,
+    .results-table thead th,
+    table th,
+    table thead th {
+      color: #fff !important;
+      font-weight: 700 !important;
+    }
+    
     /* Page background styling */
     #page-background {
       position: fixed;
@@ -591,7 +693,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1;
+      z-index: 0;
       pointer-events: none;
       overflow: hidden;
     }
@@ -600,128 +702,8 @@
       height: 100% !important;
       min-height: 100vh;
     }
-    /* Ensure all sections after hero are above background */
-    .section:not(.hero-video-section) {
-      position: relative;
-      z-index: 1;
-      background-color: rgba(0, 0, 0, 0.3);
-    }
-    
-    /* Dataset video section */
-    .dataset-block {
-      margin-top: 2.5rem;
-    }
-    .dataset-title {
-      color: #ffffff;
-      margin-bottom: 1.25rem;
-    }
-    .dataset-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1.5rem;
-    }
-    .dataset-card {
-      background: radial-gradient(circle at top left, rgba(88, 216, 251, 0.8), rgba(190, 106, 239, 0.5), rgba(0, 0, 0, 0.9));
-      border-radius: 18px;
-      padding: 1px;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
-    }
-    .dataset-card-inner {
-      background: rgba(0, 0, 0, 0.9);
-      border-radius: 16px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-    .dataset-video {
-      width: 100%;
-      display: block;
-      background: #000;
-    }
-    .dataset-caption {
-      padding: 0.75rem 1rem 1rem;
-      font-size: 0.85rem;
-      color: #d0d0d0;
-      margin: 0;
-    }
-
-    @media (max-width: 1024px) {
-      .dataset-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-    @media (max-width: 600px) {
-      .dataset-grid {
-        grid-template-columns: repeat(1, minmax(0, 1fr));
-      }
-    }
-
-    /* Results Tabs Styling */
-    .results-tabs-container {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 3rem;
-    }
-    .results-tabs {
-      display: flex;
-      gap: 0.5rem;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-      padding: 0.5rem;
-      border-radius: 16px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-    .tab-btn {
-      padding: 0.75rem 1.5rem;
-      background: transparent;
-      border: none;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: #666;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-    .tab-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, rgba(88, 216, 251, 0.15) 0%, rgba(190, 106, 239, 0.15) 100%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .tab-btn:hover::before {
-      opacity: 1;
-    }
-    .tab-btn.is-active {
-      background: linear-gradient(135deg, rgba(88, 216, 251, 0.2) 0%, rgba(190, 106, 239, 0.2) 100%);
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(88, 216, 251, 0.3);
-      transform: translateY(-2px);
-    }
-    .tab-btn.is-active::before {
-      opacity: 1;
-    }
-    .tab-btn span {
-      position: relative;
-      z-index: 1;
-    }
-    
-    /* Table Wrapper Styling */
-    .table-wrapper {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-      border-radius: 20px;
-      padding: 2rem;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      margin: 2rem 0;
-    }
+    /* Premium design overrides - minimal inline styles */
+    /* All major styling moved to premium.css for consistency */
     .table-container {
       overflow-x: auto;
       border-radius: 12px;
@@ -746,17 +728,17 @@
       padding: 0 0.5rem;
     }
     .results-table thead {
-      background: linear-gradient(135deg, rgba(88, 216, 251, 0.15) 0%, rgba(190, 106, 239, 0.15) 100%);
+      background: rgba(255, 255, 255, 0.03);
     }
     .results-table th {
       padding: 1rem 0.75rem;
       text-align: left;
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: #fff;
+      font-weight: 700 !important;
+      font-size: 1.05rem !important;
+      color: #fff !important;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-bottom: 2px solid rgba(88, 216, 251, 0.3);
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     .results-table th:first-child {
       border-top-left-radius: 12px;
@@ -772,15 +754,15 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
     .results-table tbody tr:hover {
-      background: linear-gradient(90deg, rgba(88, 216, 251, 0.08) 0%, rgba(190, 106, 239, 0.08) 100%);
-      transform: scale(1.01);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.02);
     }
     .results-table td {
       padding: 0.75rem;
       color: #fff;
       text-align: left;
       border-right: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 1rem;
+      font-weight: 500;
     }
     .results-table td:not(:first-child) {
       text-align: center;
@@ -793,38 +775,34 @@
     }
     /* Normalize strong tags inside body so numbers are not bold */
     .results-table tbody strong {
-      font-weight: 400;
+      font-weight: 500;
       color: #fff;
     }
     
-    /* Ours Column Styling */
+    /* Ours Column Styling - Subtle highlight */
     .ours-col {
-      background: linear-gradient(135deg, rgba(255, 165, 0, 0.2) 0%, rgba(255, 140, 0, 0.15) 100%) !important;
-      border-left: 2px solid rgba(255, 165, 0, 0.4);
-      border-right: 2px solid rgba(255, 165, 0, 0.4);
+      background: rgba(255, 165, 0, 0.08) !important;
+      border-left: 1px solid rgba(255, 165, 0, 0.2);
+      border-right: 1px solid rgba(255, 165, 0, 0.2);
     }
     .ours-cell {
-      background: linear-gradient(135deg, rgba(255, 165, 0, 0.15) 0%, rgba(255, 140, 0, 0.1) 100%) !important;
-      border-left: 1px solid rgba(255, 165, 0, 0.3);
-      border-right: 1px solid rgba(255, 165, 0, 0.3);
+      background: rgba(255, 165, 0, 0.06) !important;
       font-weight: 400;
       color: #fff !important;
     }
     .ours-row {
-      background: linear-gradient(135deg, rgba(255, 165, 0, 0.25) 0%, rgba(255, 140, 0, 0.2) 100%) !important;
-      border-top: 2px solid rgba(255, 165, 0, 0.5);
-      border-bottom: 2px solid rgba(255, 165, 0, 0.5);
+      background: rgba(255, 165, 0, 0.1) !important;
+      border-top: 1px solid rgba(255, 165, 0, 0.3);
     }
     .ours-row td {
       color: #fff;
-      border-top: 2px solid rgba(255, 165, 0, 0.3);
     }
     .ours-row td:first-child strong {
-      font-weight: 600;
+      font-weight: 500;
     }
     .avg-row {
-      background: linear-gradient(135deg, rgba(100, 100, 100, 0.15) 0%, rgba(80, 80, 80, 0.1) 100%) !important;
-      border-top: 2px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.03) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     .avg-row td {
       color: #fff;
@@ -844,10 +822,15 @@
         padding: 1rem;
       }
       .results-table {
-        font-size: 0.75rem;
+        font-size: 0.9rem;
       }
-      .results-table th,
+      .results-table th {
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
       .results-table td {
+        font-size: 0.9rem;
+        font-weight: 500;
         padding: 0.5rem 0.4rem;
       }
     }
@@ -887,12 +870,9 @@
     <div class="container is-max-desktop">
         <div class="column is-full">
           <h2 class="title is-3">Author Team</h2>
-          <p class="content mb-4">
-            <b>Core Team</b>
-          </p>
           <p class="content has-text-justified mb-4">
             Author contributions in the following areas are as follows:
-            <ul style="list-style-type: disc; margin-left: 2%; margin-bottom: 2%;">
+            <ul class="content">
               <li>Data Collection & Analysis: Yandan Yang, Haoyun Liu, Ronghan Chen, Yuzhi Chen, Dekang Qi</li>
               <li>Data Standardization: Yandan Yang, Tong lin, Xinyuan Chang</li>
               <li>Data Pipeline: Tong Lin, Shuang Zeng, Dongjie Huo</li>
@@ -918,8 +898,11 @@
         </p>
         <div class="bibtex-container">
             <pre><code id="bibtex-code">
-              ........
-              
+              @article{abot-m0,
+                title={ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning},
+                author={AMAP CV Lab},
+                year={2026}
+              }
             </code></pre>
             <button onclick="copyToClipboard()" class="copy-button">
                 <!-- 粘贴图标，可以使用Font Awesome 图标库 -->
