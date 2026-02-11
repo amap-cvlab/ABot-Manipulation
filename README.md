@@ -1,5 +1,5 @@
 <div align="center">
-<img src="assets/logo.png" alt="Logo" width="100"/>
+<img src="assets/logo.png" alt="Logo" width="200"/>
 
 <h1>ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learnin</h1>
 
@@ -35,7 +35,7 @@
 ---
 
 ## 📢 News
-[2026-2-11] 🥳🥳**ABot-M0**'s [technical report]() have been released. Weights and codes are coming soon. 🎉🎉
+[2026-2-11] 🥳🥳**ABot-M0**'s [technical report](https://github.com/amap-cvlab/ABot-Manipulation/blob/main/assets/ABot-M0_Technical_Report.pdf) have been released. Weights and codes are coming soon. 🎉🎉
 
 ---
 
