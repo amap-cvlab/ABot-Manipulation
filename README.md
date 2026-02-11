@@ -47,7 +47,7 @@ If you find **ABot** is useful in your research or applications, please consider
 ```
               @article{abot-m0,
                 title={ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning},
-                author={Foundation Model Team, AMAP CV Lab},
+                author={AMAP CV Lab},
                 year={2026}
               }
 ```
