@@ -1,7 +1,7 @@
 <div align="center">
 <img src="assets/logo.png" alt="Logo" width="200"/>
 
-<h1>ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learnin</h1>
+<h1>ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning</h1>
 
 <p align="center">
   <b>AMAP CV Lab</b>
