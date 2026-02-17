@@ -45,11 +45,12 @@
 If you find **ABot** is useful in your research or applications, please consider giving us a **star** 🌟 and **citing** it by the following BibTeX entry:
 
 ```
-              @article{abot-m0,
-                title={ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning},
-                author={AMAP CV Lab},
-                year={2026}
-              }
+@article{yang2026abot,
+  title={ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning},
+  author={Yang, Yandan and Zeng, Shuang and Lin, Tong and Chang, Xinyuan and Qi, Dekang and Xiao, Junjin and Liu, Haoyun and Chen, Ronghan and Chen, Yuzhi and Huo, Dongjie and others},
+  journal={arXiv preprint arXiv:2602.11236},
+  year={2026}
+}
 ```
 
 ---
