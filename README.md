@@ -35,7 +35,7 @@
 ---
 
 ## 📢 News
-[2026-2-11] 🥳🥳**ABot-M0**'s [technical report](https://github.com/amap-cvlab/ABot-Manipulation/blob/main/assets/ABot-M0_Technical_Report.pdf) have been released. Weights and codes are coming soon. 🎉🎉
+[2026-2-11] 🥳🥳**ABot-M0**'s [technical report](https://arxiv.org/abs/2602.11236) have been released. Weights and codes are coming soon. 🎉🎉
 
 ---
 
