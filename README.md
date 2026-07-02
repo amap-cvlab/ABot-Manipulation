@@ -1,7 +1,10 @@
 <div align="center">
-<img src="assets/logo.png" alt="Logo" width="200"/>
+<a href="https://github.com/amap-cvlab/ABot-Manipulation/blob/main/assets/logo-black.png">
+  <img src="assets/logo-black.png" alt="Logo" width="200"/>
+</a>
 
-<h1>ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning</h1>
+<h1>ABot-M0.5: Unified Mobility-and-Manipulation World
+Action Model</h1>
 
 <p align="center">
   <b>AMAP CV Lab</b>
