@@ -1,3 +1,0 @@
-# docs-requirements.txt
-hf-doc-builder @ git+https://github.com/huggingface/doc-builder.git@main
-watchdog>=6.0.0

@@ -1,8 +1,0 @@
-{
-  "libero_franka": [
-    "libero_10_no_noops_1.0.0_lerobot",
-    "libero_goal_no_noops_1.0.0_lerobot",
-    "libero_object_no_noops_1.0.0_lerobot",
-    "libero_spatial_no_noops_1.0.0_lerobot"
-  ]
-}

@@ -1,1 +1,0 @@
-benchmark1_2_compressed-franka_3rgb-241223_upright_cup
