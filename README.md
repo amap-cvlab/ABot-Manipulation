@@ -1,6 +1,6 @@
 <div align="center">
-<a href="https://github.com/amap-cvlab/ABot-Manipulation/blob/main/assets/logo.png">
-  <img src="assets/logo.png" alt="Logo" width="200"/>
+<a href="https://github.com/amap-cvlab/ABot-Manipulation/blob/main/assets/logo-black.png">
+  <img src="assets/logo-black.png" alt="Logo" width="200"/>
 </a>
 
 <h1>ABot-M0.5: Unified Mobility-and-Manipulation World
@@ -12,22 +12,23 @@ Action Model</h1>
 
 <p align="center">
   <a href="https://arxiv.org/pdf/2607.00678"><img src="https://img.shields.io/static/v1?label=Paper&message=Technical_Report&color=red&logo=arxiv"></a>
+  <a href="#"><img src="https://img.shields.io/static/v1?label=Project&message=Coming_Soon&color=brightgreen"></a>
 </p>
 
 </div>
 
----
+<!-- --- -->
 
 > 📢 **Version Notice**
 > 
 > Welcome to the official repository of **ABot-M0.5** — our latest **World Action Model (WAM) for mobile manipulation**. ABot-M0.5 addresses the core bottlenecks of long-horizon mobile manipulation through a **three-level alignment** paradigm.
 > 
-> 🔗 If you are looking for our previous **ABot-M0**, a VLA foundation model for fixed-base tabletop manipulation based on Action Manifold Learning, please visit:
+> 🔗 If you are looking for our previous **ABot-M0**, please visit:
 > 👉 **[ABot-M0 (VLA Foundation Model)](https://github.com/amap-cvlab/ABot-Manipulation/tree/ABot-M0)**
 
 
-
----
+<!-- 
+--- -->
 
 
 <table align="center" width="100%">
