@@ -1,0 +1,676 @@
+/* ============================================
+   PREMIUM SWISS SPA DESIGN SYSTEM
+   Minimalist, High-End, Professional
+   ============================================ */
+
+/* ============================================
+   COLOR PALETTE - Restrained & Cohesive
+   ============================================ */
+:root {
+  /* Primary Colors - Monochrome Foundation */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f5f5f5;
+  --color-gray-200: #e5e5e5;
+  --color-gray-300: #d4d4d4;
+  --color-gray-400: #a3a3a3;
+  --color-gray-500: #737373;
+  --color-gray-600: #525252;
+  --color-gray-700: #404040;
+  --color-gray-800: #262626;
+  --color-gray-900: #171717;
+  
+  /* Accent Colors - Minimal & Refined */
+  --color-accent-primary: #58d8fb;
+  --color-accent-secondary: #be6aef;
+  --color-accent-subtle: rgba(88, 216, 251, 0.1);
+  
+  /* Spacing System - Perfect Balance */
+  --spacing-xs: 0.5rem;    /* 8px */
+  --spacing-sm: 0.75rem;   /* 12px */
+  --spacing-md: 1rem;      /* 16px */
+  --spacing-lg: 1.5rem;    /* 24px */
+  --spacing-xl: 2rem;      /* 32px */
+  --spacing-2xl: 3rem;     /* 48px */
+  --spacing-3xl: 4rem;     /* 64px */
+  --spacing-4xl: 6rem;     /* 96px */
+  --spacing-5xl: 8rem;     /* 128px */
+  
+  /* Typography */
+  --font-primary: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Google Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   BASE RESET & FOUNDATION
+   ============================================ */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--color-black);
+  color: var(--color-white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ============================================
+   TYPOGRAPHY - Refined & Elegant
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.title.is-3 {
+  font-size: 2.25rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--spacing-xl);
+  color: var(--color-white);
+}
+
+.title.is-4 {
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-white);
+}
+
+.content {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: var(--color-gray-300);
+  font-weight: 400;
+}
+
+.content p {
+  margin-bottom: var(--spacing-md);
+  color: var(--color-gray-300);
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+.content strong,
+.content b {
+  font-weight: 600;
+  color: var(--color-white);
+}
+
+/* ============================================
+   SPACING SYSTEM - Perfect Balance
+   ============================================ */
+.section {
+  padding-top: var(--spacing-4xl);
+  padding-bottom: var(--spacing-4xl);
+  position: relative;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.section:first-of-type {
+  padding-top: var(--spacing-5xl);
+}
+
+.container.is-max-desktop {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: var(--spacing-xl);
+  padding-right: var(--spacing-xl);
+}
+
+.column.is-full {
+  padding: 0;
+}
+
+/* ============================================
+   HERO SECTION - Minimal & Impactful
+   ============================================ */
+.hero-video-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+}
+
+.hero-video-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-video-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-overlay-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  z-index: 10;
+  padding-bottom: 8vh;
+  padding-left: var(--spacing-3xl);
+}
+
+.hero-content {
+  text-align: left;
+  max-width: 1400px;
+  padding: var(--spacing-lg);
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  margin-bottom: var(--spacing-md);
+  color: var(--color-white);
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  font-size: 1.05rem;
+  color: var(--color-gray-400);
+  font-weight: 500;
+}
+
+.hero-author .author-link {
+  color: var(--color-gray-300);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.hero-author .author-link:hover {
+  color: var(--color-white);
+}
+
+.hero-date {
+  color: var(--color-gray-500);
+}
+
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--spacing-xs);
+}
+
+/* ============================================
+   BUTTONS - Refined & Subtle
+   ============================================ */
+.button.is-dark {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all var(--transition-base);
+  backdrop-filter: blur(10px);
+}
+
+.button.is-dark:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.button.is-dark .icon {
+  margin-right: var(--spacing-xs);
+}
+
+/* ============================================
+   IMAGES & FIGURES - Elegant Presentation
+   ============================================ */
+figure.image {
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  background: transparent;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+figure.image:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+}
+
+figure.image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.video-caption {
+  text-align: center;
+  margin-top: var(--spacing-md);
+  font-size: 1rem;
+  color: var(--color-gray-500);
+  font-weight: 500;
+}
+
+/* ============================================
+   LISTS - Clean & Readable
+   ============================================ */
+.content ul {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-xl) 0;
+}
+
+.content ul li {
+  position: relative;
+  padding-left: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: var(--color-gray-300);
+  font-weight: 400;
+}
+
+.content ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-gray-600);
+}
+
+.content ul li strong {
+  color: var(--color-white);
+  font-weight: 500;
+}
+
+/* ============================================
+   TABLES - Premium Data Presentation
+   ============================================ */
+.results-tabs-container {
+  margin-bottom: var(--spacing-3xl);
+}
+
+.results-tabs {
+  display: flex;
+  gap: var(--spacing-xs);
+  background: rgba(255, 255, 255, 0.02);
+  padding: var(--spacing-xs);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tab-btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--color-gray-400);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+}
+
+.tab-btn:hover {
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-btn.is-active {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+}
+
+.table-wrapper {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  padding: var(--spacing-xl);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin: var(--spacing-xl) 0;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 1rem;
+}
+
+.results-table th {
+  padding: var(--spacing-md);
+  text-align: left;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.results-table th:not(:first-child) {
+  text-align: center;
+}
+
+.results-table td {
+  padding: var(--spacing-md);
+  color: var(--color-white);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.results-table td:not(:first-child) {
+  text-align: center;
+}
+
+.results-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.ours-row {
+  background: rgba(255, 165, 0, 0.1) !important;
+  border-top: 1px solid rgba(255, 165, 0, 0.3);
+}
+
+.ours-row td {
+  color: var(--color-white);
+}
+
+.ours-cell {
+  background: rgba(255, 165, 0, 0.08) !important;
+}
+
+/* ============================================
+   VIDEO GRID - Clean Layout
+   ============================================ */
+.dataset-block {
+  margin-top: var(--spacing-4xl);
+}
+
+.dataset-block:first-of-type {
+  margin-top: var(--spacing-2xl);
+}
+
+.dataset-title {
+  color: var(--color-white);
+  margin-bottom: var(--spacing-xl);
+}
+
+.dataset-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.dataset-card {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all var(--transition-base);
+}
+
+.dataset-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.dataset-card-inner {
+  background: var(--color-black);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.dataset-video {
+  width: 100%;
+  display: block;
+  background: var(--color-black);
+}
+
+.dataset-caption {
+  padding: var(--spacing-md);
+  font-size: 1rem;
+  color: var(--color-gray-500);
+  margin: 0;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN - Mobile First
+   ============================================ */
+@media (max-width: 1024px) {
+  .dataset-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .container.is-max-desktop {
+    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --spacing-3xl: 3rem;
+    --spacing-4xl: 4rem;
+    --spacing-5xl: 5rem;
+  }
+  
+  .section {
+    padding-top: var(--spacing-3xl);
+    padding-bottom: var(--spacing-3xl);
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-meta {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    font-size: 1rem;
+  }
+  
+  .hero-links {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .hero-links .button {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.95rem;
+  }
+  
+  .dataset-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .results-tabs {
+    flex-wrap: wrap;
+  }
+  
+  .tab-btn {
+    flex: 1;
+    min-width: calc(50% - var(--spacing-xs));
+    font-size: 0.9rem;
+  }
+  
+  .table-wrapper {
+    padding: var(--spacing-md);
+  }
+  
+  .results-table {
+    font-size: 0.9rem;
+  }
+  
+  .results-table th {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-white) !important;
+  }
+  
+  .results-table td {
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: var(--spacing-sm);
+  }
+  
+  .content {
+    font-size: 1rem;
+  }
+  
+  .content ul li {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-overlay-content {
+    padding-left: var(--spacing-md) !important;
+  }
+  
+  .container.is-max-desktop {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+  }
+  
+  .title.is-3 {
+    font-size: 1.75rem;
+    font-weight: 500;
+  }
+  
+  .content {
+    font-size: 1rem;
+  }
+  
+  .content ul li {
+    font-size: 1rem;
+  }
+  
+  .results-table {
+    font-size: 0.85rem;
+  }
+  
+  .results-table th {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-white) !important;
+  }
+  
+  .results-table td {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+}
+
+/* ============================================
+   UTILITIES - Clean Helpers
+   ============================================ */
+.mb-2 { margin-bottom: var(--spacing-sm); }
+.mb-3 { margin-bottom: var(--spacing-md); }
+.mb-4 { margin-bottom: var(--spacing-lg); }
+.mt-2 { margin-top: var(--spacing-sm); }
+.mt-3 { margin-top: var(--spacing-md); }
+.mt-4 { margin-top: var(--spacing-lg); }
+
+.has-text-justified {
+  text-align: justify;
+}
+
+/* ============================================
+   BIBTEX SECTION - Clean Code Display
+   ============================================ */
+.bibtex-container {
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: var(--spacing-lg);
+  margin: var(--spacing-xl) 0;
+}
+
+.bibtex-container pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-gray-300);
+  overflow-x: auto;
+}
+
+.bibtex-container code {
+  display: block;
+  color: var(--color-gray-300);
+  font-family: 'Courier New', monospace;
+}
+
+.copy-button {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: var(--spacing-sm);
+  color: var(--color-gray-400);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.copy-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   FOOTER - Minimal
+   ============================================ */
+.footer {
+  padding: var(--spacing-3xl) 0;
+  background: transparent;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: var(--spacing-4xl);
+}

@@ -4,1019 +4,567 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-    content="ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning">
+    content="ABot-M0.5: Unified Mobility-and-Manipulation World Action Model">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning</title>
+  <title>ABot-M0.5: Unified Mobility-and-Manipulation World Action Model</title>
 
-  <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-PYVRSFMDRL');
   </script>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
-
-  <link rel="stylesheet" href="./static/css/bulma.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./m0.5/static/css/bulma.min.css">
+  <link rel="stylesheet" href="./m0.5/static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./m0.5/static/css/bulma-slider.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="stylesheet" href="./static/css/premium.css">
+  <link rel="stylesheet" href="./m0.5/static/css/index.css">
+  <link rel="stylesheet" href="./m0.5/static/css/premium.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="./static/js/fontawesome.all.min.js"></script>
-  <script src="./static/js/bulma-carousel.min.js"></script>
-  <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js"></script>
-
-  <!-- Spline 3D viewer -->
+  <script defer src="./m0.5/static/js/fontawesome.all.min.js"></script>
+  <script src="./m0.5/static/js/bulma-carousel.min.js"></script>
+  <script src="./m0.5/static/js/bulma-slider.min.js"></script>
+  <script src="./m0.5/static/js/index.js"></script>
   <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.52/build/spline-viewer.js"></script>
+
+  <style>
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0.85rem 1.25rem;
+      pointer-events: none;
+    }
+    .model-switcher {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .model-switch-btn {
+      color: rgba(255, 255, 255, 0.55);
+      text-decoration: none;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: all 0.25s ease;
+    }
+    a.model-switch-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .model-switch-btn.active {
+      color: #58d8fb;
+      background: rgba(88, 216, 251, 0.12);
+    }
+    .model-switch-divider {
+      color: rgba(255, 255, 255, 0.2);
+      font-weight: 300;
+    }
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin: 2rem 0 1rem;
+    }
+    .highlight-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+    .highlight-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: #58d8fb;
+    }
+    .highlight-card p {
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.78);
+      margin: 0;
+    }
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .metric-card {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1rem;
+      padding: 1.1rem 0.75rem;
+    }
+    .metric-card .num {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #58d8fb;
+      line-height: 1.2;
+    }
+    .metric-card .label {
+      margin-top: 0.35rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    @media (max-width: 900px) {
+      .highlight-grid, .metric-row { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .highlight-grid, .metric-row { grid-template-columns: 1fr; }
+    }
+
+    /* Hero: height follows the title video's native aspect ratio (no cropping) */
+    .hero-video-section { height: auto; min-height: 0; overflow: hidden; background: transparent !important; }
+    .hero-video-container { height: auto; overflow: hidden; }
+    .hero-video-placeholder {
+      position: relative;
+      width: 100%;
+      height: auto;
+      display: block;
+      background: transparent;
+    }
+    .hero-video-placeholder video {
+      position: relative;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .hero-title {
+      font-size: clamp(1.5rem, 3.4vw, 2.6rem) !important;
+      line-height: 1.15 !important;
+      text-align: center !important;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .hero-title-main {
+      text-transform: uppercase;
+      font-family: 'Noto Sans', sans-serif;
+      font-weight: 900;
+      letter-spacing: -2px;
+      color: #ffffff;
+      -webkit-text-fill-color: #ffffff;
+      -webkit-text-stroke: 1px #ffffff;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 1.05;
+    }
+    .hero-title-sub {
+      display: block;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      line-height: 1.25;
+      max-width: 800px;
+      margin: 16px auto 0;
+      white-space: nowrap;
+    }
+    .hero-content { text-align: center !important; }
+    .hero-meta { justify-content: center !important; }
+    .hero-links { justify-content: center !important; }
+    .hero-overlay-content {
+      justify-content: center !important;
+      padding-left: 0 !important;
+      padding-bottom: 3vh !important;
+    }
+    @media (max-width: 768px) {
+      .hero-video-placeholder { height: auto; }
+      .hero-video-placeholder video {
+        position: relative;
+        top: auto; left: auto;
+        transform: none;
+        width: 100%; height: auto;
+        min-width: 0; min-height: 0;
+        object-fit: contain;
+      }
+      .hero-title { font-size: clamp(1.25rem, 4vw, 1.6rem) !important; }
+    }
+    @media (max-width: 480px) {
+      .hero-video-placeholder video {
+        object-fit: contain;
+      }
+      .hero-title { font-size: 1.15rem !important; }
+    }
+  </style>
 </head>
 
 <body>
-  <!-- Fixed Spline Background for pages after hero section -->
+  <div class="top-nav">
+    <nav class="model-switcher" aria-label="Model switcher">
+      <a href="./m0/index.html" class="model-switch-btn" title="ABot-M0">M0</a>
+      <span class="model-switch-divider">|</span>
+      <span class="model-switch-btn active" title="ABot-M0.5">M0.5</span>
+    </nav>
+  </div>
+
   <div id="page-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 0; pointer-events: none; opacity: 1; transition: opacity 0.8s ease-in-out;">
     <spline-viewer url="https://prod.spline.design/1M9l72twnpJGjItI/scene.splinecode" style="width: 100%; height: 100%; border: none;"></spline-viewer>
   </div>
 
-  <!-- <nav class="navbar" role="navigation" aria-label="main navigation"> -->
-  <!-- <div class="navbar-brand"> -->
-  <!-- <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"> -->
-  <!-- <span aria-hidden="true"></span> -->
-  <!-- <span aria-hidden="true"></span> -->
-  <!-- <span aria-hidden="true"></span> -->
-  <!-- </a> -->
-  <!-- </div> -->
-  <!-- <div class="navbar-menu"> -->
-  <!-- <div class="navbar-start" style="flex-grow: 1; justify-content: center;"> -->
-  <!-- <a class="navbar-item" href="https://github.com/thu-ml/"> -->
-  <!-- <span class="icon"> -->
-  <!-- <i class="fas fa-home"></i> -->
-  <!-- </span> -->
-  <!-- </a> -->
-
-  <!-- </div> -->
-  <!-- </nav> -->
-
-
-  <!-- Hero Section with Spline 3D Background -->
   <section class="hero-video-section">
-    <!-- Full Width 3D Container -->
     <div class="hero-video-container">
       <div class="hero-video-placeholder">
-        <spline-viewer
-          url="https://prod.spline.design/GN9meKVmSkoE2QMl/scene.splinecode"
-          style="width: 100%; height: 100%; border: none;"
-        ></spline-viewer>
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.25); pointer-events: none;"></div>
+        <video src="./m0.5/title.mp4" alt="ABot-M0.5 title" autoplay muted loop playsinline></video>
       </div>
-      
-      <!-- Overlay Content - Title, Date, and Links inside 3D scene -->
+
       <div class="hero-overlay-content">
         <div class="hero-content">
-            <h1 class="hero-title">ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning</h1>
-            
-            <!-- Author and Date Information -->
-            <div class="hero-meta">
-              <div class="hero-author">
-                <a href="#author" class="author-link">AMAP CV Lab</a>
-              </div>
-              <span class="hero-date">February 11, 2026</span>
+          <h1 class="hero-title">
+            <span class="hero-title-main">ABOT-M0.5</span>
+            <span class="hero-title-sub">Unified Mobility-and-Manipulation World Action Model</span>
+          </h1>
+
+          <div class="hero-meta">
+            <div class="hero-author">
+              <a href="#author" class="author-link">AMAP CV Lab</a>
             </div>
-            
-            <!-- Action Links -->
-            <div class="hero-links">
-              <span class="link-block">
-                <a href="https://github.com/amap-cvlab/ABot-Manipulation" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="fab fa-github"></i>
-                  </span>
-                  <span>Code</span>
-                </a>
-              </span>
-              <span class="link-block">
-                <a href="https://huggingface.co/acvlab" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon"> 
-                    <img src="static/svg/hf.svg" alt="huggingface" width="24" height="24">
-                  </span>
-                  <span>Model</span>
-                </a>
-              </span>
-              <!-- <span class="link-block" style="opacity: 0.6; pointer-events: none; cursor: default;">
-                <a href="#" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <svg class="svg-inline--fa fa-database fa-w-14" aria-hidden="true" focusable="false"
-                      data-prefix="fas" data-icon="database" role="img" xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 448 512" data-fa-i2svg="">
-                      <path fill="currentColor"
-                        d="M448 73.143v45.714C448 159.143 347.667 192 224 192S0 159.143 0 118.857V73.143C0 32.857 100.333 0 224 0s224 32.857 224 73.143zM448 176v102.857C448 319.143 347.667 352 224 352S0 319.143 0 278.857V176c48.125 33.143 136.208 48.572 224 48.572S399.874 209.143 448 176zm0 160v102.857C448 479.143 347.667 512 224 512S0 479.143 0 438.857V336c48.125 33.143 136.208 48.572 224 48.572S399.874 369.143 448 336z">
-                      </path>
-                    </svg>
-                  </span>
-                  <span>Data</span>
-                </a>
-              </span> -->
-              <span class="link-block">
-                <a href="https://arxiv.org/abs/2602.11236" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="fas fa-file-pdf"></i>
-                  </span>
-                  <span>Technical Report</span>
-                </a>
-              </span>
-              <!-- <span class="link-block">
-                <a href="https://x.com/songming_liu/status/1971643908372550108" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon"> 
-                    <i class="fa-brands fa-twitter"></i>                            
-                  </span>
-                  <span>Twitter</span>
-                </a>
-              </span>    -->
-              <!-- <span class="link-block">
-                <a href="discord.html" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon"> 
-                    <i class="fa-brands fa-discord"></i>
-                  </span>
-                  <span>Discord</span>
-                </a>
-              </span> -->
-              <!-- <span class="link-block">
-                <a href="feishu.html" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon"> 
-                    <svg t="1758621592506" class="icon" viewBox="0 0 1335 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4804" width="200" height="200"><path d="M616.34246923 637.06814707s83.08051941-41.33100723 179.38003464-141.42593244c20.30472345-21.08400898 101.26385431-114.00661917 215.7611347-143.8359461 25.61541119-6.6527916 107.70017706-34.31743588 241.39097699 5.7724876 4.12732837 1.24108457 0.92359808 6.76824114-1.86162726 10.33275202s-32.45580863 27.76566275-122.5499002 215.41478522c-7.2156091 15.253797-87.22227887 171.54388367-310.83399646 125.6526112-12.17994736-2.49660105-198.81888518-60.75542588-201.28662241-71.9107575zM363.78172951 90.125s-19.20795063 3.08828074-4.0263099 24.53307028c3.85313516 5.26739447 224.75178287 173.54982266 342.98674886 385.18362899 7.30219647 13.06025217 37.80979047-27.54919473 37.80979047-27.54919473s114.00661917-120.73156623 200.88254938-144.61523161c6.27757993-1.71731469 13.63750076-3.40576721 1.70288361-25.97619178-2.75636233-5.25296338-69.68834967-185.38342136-132.52187165-211.51835596z" p-id="4805" fill="#ffffff"></path><path d="M154.54350493 388.23066187s1.54413996-28.86243558 24.07127124-13.32001346c6.95584699 4.77673325 437.72769223 453.14023288 796.28572541 386.15052035 0 0 3.72325451 1.65959033-6.0899741 11.27078119-3.59337305 3.50678567-364.04189566 327.25672175-798.04633337 48.25799204 0 0-19.68418076-13.33444537-16.22068918-49.91758155z" p-id="4806" fill="#ffffff"></path></svg>
-                  </span>
-                  <span>Feishu</span>
-                </a>
-              </span> -->
-              <span class="link-block">
-                <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon"> 
-                    <svg t="1758713357279" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4694" width="200" height="200"><path d="M156.09136 606.57001a457.596822 457.596822 0 0 1 221.680239-392.516385 50.844091 50.844091 0 1 1 50.844091 86.943396 355.90864 355.90864 0 0 0-138.804369 152.532274h16.77855a152.532274 152.532274 0 1 1-152.532274 152.532274z m406.752731 0a457.596822 457.596822 0 0 1 221.680239-392.007944 50.844091 50.844091 0 1 1 50.844091 86.943396 355.90864 355.90864 0 0 0-138.804369 152.532274h16.77855a152.532274 152.532274 0 1 1-152.532274 152.532274z" fill="#ffffff" p-id="4695"></path></svg>
-                  </span>
-                  <span>BibTeX</span>
-                </a>
-              </span>
-            </div>
+            <span class="hero-date">July 2026</span>
           </div>
+
+          <div class="hero-links">
+            <span class="link-block">
+              <a href="https://github.com/amap-cvlab/ABot-Manipulation" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon"><i class="fab fa-github"></i></span>
+                <span>Code</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://arxiv.org/abs/2607.00678" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                <span>Paper</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="#BibTeX" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon"><i class="fas fa-quote-right"></i></span>
+                <span>BibTeX</span>
+              </a>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
-
-  <!-- <section class="hero teaser">
-    
-  </section> -->
-
-
 
   <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-3">ABot-M0</h2>
-        <div class="column is-full">
-          <p class="content has-text-justified mb-4">
-            ABot-M0 is a general-purpose robotics model with the following core highlights:
-          </p>
-          <div style="margin: var(--spacing-3xl) 0;">
-            <figure class="image" style="max-width: 1000px; margin: 0 auto;">
-              <img src="./static/image/model.jpg" alt="ABot-M0 model overview">
-            </figure>
-            <p class="video-caption">
-              The overview of <b>ABot-M0</b>.
-            </p>
-          </div>
-          <p class="content has-text-justified mb-4">
-            <ul>
-              <li><b>Massive & Unified Data:</b> It integrates over 6 million open-source trajectories to form the largest unified dataset for robotic manipulation, providing a strong foundation for generalization.</li>
-              <li><b>Innovative Action Paradigm:</b> It pioneers Action Manifold Learning (AML), which directly predicts clean actions instead of noise, resulting in a more efficient and stable model.</li>
-              <li><b>Modular 3D Perception:</b> It supports plug-and-play modules to enhance 3D spatial understanding, improving execution precision for complex tasks.</li>
-            </ul>
-          </p>
+      <div style="margin: 2rem 0;">
+        <figure class="image" style="max-width: 1000px; margin: 0 auto;">
+          <video src="./m0.5/mobile-manip.mp4" alt="Mobile manipulation demo" autoplay muted loop playsinline
+            style="width: 100%; border-radius: 12px; display: block;"></video>
+        </figure>
+      </div>
 
+      <div style="margin: 2rem 0;">
+        <figure class="image" style="max-width: 1000px; margin: 0 auto;">
+          <video src="./m0.5/collab.mp4" alt="Heterogeneous robot collaboration demo" autoplay muted loop playsinline
+            style="width: 100%; border-radius: 12px; display: block;"></video>
+        </figure>
+      </div>
 
-          <!-- UniACT Dataset Overview -->
-          <div style="margin: var(--spacing-5xl) 0 var(--spacing-2xl);">
-            <h2 class="title is-3">UniACT-dataset</h2>
-            <figure class="image" style="max-width: 1000px; margin: 0 auto;">
-              <img src="./static/image/dataset.jpg" alt="UniACT-dataset overview">
-            </figure>
-            <p class="video-caption">
-              <b>UniACT-dataset</b>: a large-scale unified robotic manipulation dataset behind ABot-M0.
-            </p>
-          </div>
+      <h2 class="title is-3" style="text-align: center; font-weight: 700;">Overview</h2>
+      <p class="content has-text-justified mb-4">
+        Mobile manipulation remains challenging for embodied learning: VLA policies are typically reactive and lack explicit world modeling, while existing World Action Models (WAMs) are poorly aligned with mobile manipulation in temporal granularity, action space, and train-test consistency. <b>ABot-M0.5</b> is a unified WAM that closes these gaps with intermediate latent actions, a dual-level Mixture-of-Transformers architecture, and Dream Forcing training.
+      </p>
 
-          <p class="content has-text-justified mb-3">
-            Robotic data suffers from fragmentation and inconsistent representations. To address this challenge, we constructed <b>UniACT-dataset</b>, one of the largest non-private robotic manipulation datasets to date.
-          </p>
+      <div style="margin: var(--spacing-3xl) 0;">
+        <figure class="image" style="max-width: 1000px; margin: 0 auto;">
+          <img src="./m0.5/static/image/01_teaser.png" alt="ABot-M0.5 teaser">
+        </figure>
+      </div>
 
-          <p class="content has-text-justified mb-2">
-            <b>Data Sources and Scale</b>
-          </p>
-          <ul class="content" style="margin-bottom: var(--spacing-xl);">
-            <li><b>Integration:</b> It aggregates 6 major public datasets, including OXE, OXE-AugE, and AgiBot-Beta.</li>
-            <li><b>Scale:</b> The dataset comprises over 6 million trajectories, amounting to 9,500+ hours of interaction data.</li>
-            <li><b>Diversity:</b> It covers more than 20 different robot morphologies.</li>
-          </ul>
+      <div class="highlight-grid">
+        <div class="highlight-card">
+          <h3>Temporal Alignment</h3>
+          <p>Intermediate latent actions bridge coarse video prediction and fine-grained robot control via local visual state transitions.</p>
+        </div>
+        <div class="highlight-card">
+          <h3>Action Disentangling</h3>
+          <p>Dual-level MoT separates modality streams and mobility vs. manipulation subspaces to reduce action conflicts.</p>
+        </div>
+        <div class="highlight-card">
+          <h3>Dream Forcing</h3>
+          <p>Inverse dynamics is trained on model-predicted videos, improving train-test consistency for long-horizon rollouts.</p>
+        </div>
+      </div>
 
-          <p class="content has-text-justified mb-2">
-            <b>Systematic Data Curation Pipeline</b>
-          </p>
-          <ul class="content" style="margin-bottom: var(--spacing-2xl);">
-            <li><b>Cleaning:</b> We filter out data with invalid instructions, visual anomalies, and erroneous actions.</li>
-            <li><b>Standardization:</b> All actions are unified into delta actions in the end-effector coordinate frame, with rotations adopting the more stable rotation vector representation.</li>
-            <li><b>Unification:</b> A “pad-to-dual” strategy is employed to enable a single model to handle both single-arm and dual-arm tasks.</li>
-          </ul>
-
-
-
-
-
-          <!-- Action Manifold Learning (AML) -->
-          <div style="margin: var(--spacing-5xl) 0 var(--spacing-2xl);">
-            <h2 class="title is-3">Action Manifold Learning (AML)</h2>
-            <figure class="image" style="max-width: 1000px; margin: 0 auto;">
-              <img src="./static/image/manifold.jpg" alt="Action Manifold Learning overview">
-            </figure>
-            <p class="video-caption">
-              <b>Action Manifold Learning (AML)</b>: learning robot actions on a low-dimensional, structured manifold.
-            </p>
-          </div>
-
-          <p class="content has-text-justified mb-3">
-            Conventional diffusion models typically learn to predict noise, an approach that is inefficient and unstable for robotic control. We propose the <b>Action Manifold Hypothesis</b>: effective robot actions are not randomly distributed in a high-dimensional space, but rather lie on a low-dimensional, smooth manifold shaped by physical laws and task constraints.
-          </p>
-
-          <p class="content has-text-justified mb-2">
-            Building on this, we design <b>Action Manifold Learning (AML)</b>:
-          </p>
-          <ul class="content" style="margin-bottom: var(--spacing-2xl);">
-            <li><b>Direct Action Prediction (a-prediction):</b> The model directly outputs clean action sequences instead of high-dimensional, unstructured noise.</li>
-            <li><b>Improved Efficiency and Stability:</b> The learning objective shifts from “fitting noise” to “projecting onto the feasible manifold.” This enables the model to learn meaningful action structures more efficiently, thereby boosting decoding speed and policy stability.</li>
-            <li><b>Enhanced Scalability:</b> The advantages of AML become more pronounced when handling higher-dimensional actions (e.g., for dexterous hands or whole-body control), laying a foundation for the long-term development of embodied intelligence.</li>
-          </ul>
-
+      <div class="metric-row">
+        <div class="metric-card">
+          <div class="num">46.6%</div>
+          <div class="label">RoboCasa365</div>
+        </div>
+        <div class="metric-card">
+          <div class="num">94.1%</div>
+          <div class="label">RoboTwin 2.0</div>
+        </div>
+        <div class="metric-card">
+          <div class="num">99.4%</div>
+          <div class="label">LIBERO</div>
+        </div>
+        <div class="metric-card">
+          <div class="num">83.4%</div>
+          <div class="label">LIBERO-Plus</div>
         </div>
       </div>
     </div>
-    <!--/ Abstract. -->
   </section>
-  
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3" style="text-align: center; font-weight: 700;">Method</h2>
+
+      <figure class="image" style="max-width: 1000px; margin: 0 auto; background: rgba(255, 255, 255, 0.25); border-radius: 12px; padding: 1rem;">
+        <img src="./m0.5/static/image/02_model.png" alt="ABot-M0.5 model architecture">
+      </figure>
+      <p class="video-caption"><b>Model architecture</b> of ABot-M0.5.</p>
+
+      <h3 class="title is-4" style="margin-top: 3rem;">Intermediate Latent Actions</h3>
+      <p class="content has-text-justified mb-4">
+        Instead of mapping video chunks directly to robot controls, ABot-M0.5 introduces frame-level intermediate latent actions that capture local visual transitions. This forms a three-stage cascade:
+        <b>world modeling → motion abstraction → control decoding</b>. Latent actions are embodiment-agnostic and can be learned from large-scale video data, then decoded into embodiment-specific controls.
+      </p>
+      <figure class="image" style="max-width: 900px; margin: 0 auto;">
+        <img src="./m0.5/static/image/09_lam.png" alt="Intermediate latent actions">
+      </figure>
+      <p class="video-caption">Intermediate latent actions bridge video latents and executable controls.</p>
+
+      <h3 class="title is-4" style="margin-top: 3rem;">Dual-Level Mixture-of-Transformers</h3>
+      <p class="content has-text-justified mb-4">
+        Mobile manipulation couples low-frequency global base motion with high-frequency arm contact dynamics. ABot-M0.5 uses a Dual-Level Mixture-of-Transformers (D-MoT) to disentangle both modality representations (video / latent action / executable action) and heterogeneous action subspaces (mobility vs. manipulation), while joint attention preserves cross-stream coordination.
+      </p>
+      <figure class="image" style="max-width: 450px; margin: 0 auto; background: rgba(255, 255, 255, 0.25); border-radius: 12px; padding: 1rem;">
+        <img src="./m0.5/static/image/10_mot.png" alt="Dual-level Mixture-of-Transformers">
+      </figure>
+      <p class="video-caption">Dual-level MoT disentangles modalities and action subspaces.</p>
+
+      <h3 class="title is-4" style="margin-top: 3rem;">Dream Forcing</h3>
+      <p class="content has-text-justified mb-4">
+        Standard teacher forcing trains inverse dynamics on ground-truth future videos, but autoregressive inference must act on self-predicted videos. Dream Forcing closes this gap with a two-phase forward pass: first generate dreamed video latents, then train action prediction on those predicted videos—making training conditions match deployment.
+      </p>
+      <div class="columns is-multiline" style="margin-top: 1rem;">
+        <div class="column is-half">
+          <figure class="image">
+            <img src="./m0.5/static/image/11_df1.png" alt="Dream Forcing 1">
+          </figure>
+        </div>
+        <div class="column is-half">
+          <figure class="image">
+            <img src="./m0.5/static/image/12_df2.png" alt="Dream Forcing 2">
+          </figure>
+        </div>
+      </div>
+      <p class="video-caption">Dream Forcing aligns train-time inverse dynamics with autoregressive inference.</p>
+
+      <h3 class="title is-4" style="margin-top: 3rem;">3-Stage Separate & Progressive Training</h3>
+      <p class="content has-text-justified mb-4">
+        A structured attention mask with disjoint temporal/modal indicators prevents modality leakage across video, latent-action, and action streams. Training proceeds progressively: large-scale video pretraining → supervised fine-tuning with teacher forcing → Dream Forcing alignment for robust long-horizon rollouts.
+      </p>
+      <figure class="image" style="max-width: 900px; margin: 0 auto; background: rgba(255, 255, 255, 0.7); border-radius: 12px; padding: 1rem;">
+        <img src="./m0.5/static/image/13_attn-mask.png" alt="Attention mask">
+      </figure>
+      <p class="video-caption">Structured attention masking for 3-stage separation.</p>
+      <figure class="image" style="max-width: 900px; margin: 2rem auto 0;">
+        <img src="./m0.5/static/image/14_attention.png" alt="Attention maps">
+      </figure>
+      <p class="video-caption">Attention maps become more target-focused after pretraining and fine-tuning.</p>
+    </div>
+  </section>
 
   <section class="section" id="results">
     <div class="container is-max-desktop">
-      <h2 class="title is-3">Results</h2>
-      <div class="column is-full">
-        <!-- Table Tabs -->
-        <div class="results-tabs-container" style="margin-bottom: 3rem;">
-          <div class="results-tabs">
-            <button class="tab-btn is-active" data-tab="libero">
-              <span>LIBERO</span>
-            </button>
-            <button class="tab-btn" data-tab="libero-plus">
-              <span>LIBERO-Plus</span>
-            </button>
-            <button class="tab-btn" data-tab="robocasa">
-              <span>RoboCasa</span>
-            </button>
-            <button class="tab-btn" data-tab="robotwin">
-              <span>RoboTwin 2.0</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- LIBERO Table -->
-        <div id="libero" class="tab-content is-active">
-          <div class="table-wrapper">
-            <div class="table-container">
-              <table class="results-table">
-                <caption class="table-caption">
-                  Success rates (%) on the LIBERO benchmark. ABot-M0 is one policy for all 4 suites.
-                </caption>
-                <thead>
-                  <tr>
-                    <th>Method</th>
-                    <th>L-Spatial</th>
-                    <th>L-Object</th>
-                    <th>L-Goal</th>
-                    <th>L-Long</th>
-                    <th>Average</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td>Diffusion Policy</td><td>78.5</td><td>87.5</td><td>73.5</td><td>64.8</td><td>76.1</td></tr>
-                  <tr><td>OpenVLA</td><td>84.7</td><td>88.4</td><td>79.2</td><td>53.7</td><td>76.5</td></tr>
-                  <tr><td>SpatialVLA</td><td>88.2</td><td>89.9</td><td>78.6</td><td>55.5</td><td>78.1</td></tr>
-                  <tr><td>CoT-VLA</td><td>87.5</td><td>91.6</td><td>87.6</td><td>69.0</td><td>83.9</td></tr>
-                  <tr><td>π₀-Fast</td><td>96.4</td><td>96.8</td><td>88.6</td><td>60.2</td><td>85.5</td></tr>
-                  <tr><td>GR00T-N1</td><td>94.4</td><td>97.6</td><td>93.0</td><td>90.6</td><td>93.9</td></tr>
-                  <tr><td>π₀</td><td>98.0</td><td>96.8</td><td>94.4</td><td>88.4</td><td>94.4</td></tr>
-                  <tr><td>F1</td><td>98.2</td><td>97.8</td><td>95.4</td><td>91.3</td><td>95.7</td></tr>
-                  <tr><td>InternVLA-M1</td><td>98.0</td><td>99.0</td><td>93.8</td><td>92.6</td><td>95.9</td></tr>
-                  <tr><td>Discrete Diffusion VLA</td><td>97.2</td><td>98.6</td><td>97.4</td><td>92.0</td><td>96.3</td></tr>
-                  <tr><td>π₀.₅</td><td><strong>98.8</strong></td><td>98.2</td><td>98.0</td><td>92.4</td><td>96.9</td></tr>
-                  <tr><td>GR00T-N1.6</td><td>97.7</td><td>98.5</td><td>97.5</td><td>94.4</td><td>97.0</td></tr>
-                  <tr><td>OpenVLA-OFT</td><td>97.6</td><td>98.4</td><td>97.9</td><td>94.5</td><td>97.1</td></tr>
-                  <tr><td>X-VLA</td><td>98.2</td><td>98.6</td><td>97.8</td><td><strong>97.6</strong></td><td>98.1</td></tr>
-                  <tr class="ours-row">
-                    <td><strong>ABot-M0 (Ours)</strong></td>
-                    <td><strong>98.8</strong></td>
-                    <td><strong>99.8</strong></td>
-                    <td><strong>99.0</strong></td>
-                    <td>96.6</td>
-                    <td><strong>98.6</strong></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- LIBERO-Plus Table -->
-        <div id="libero-plus" class="tab-content" style="display: none;">
-          <div class="table-wrapper">
-            <div class="table-container">
-              <table class="results-table">
-                <caption class="table-caption">
-                  Zero-shot performance comparison on LIBERO-Plus. One ABot-M0 for all 4 suites is trained only on the standard LIBERO dataset (no LIBERO-Plus data fine-tuning).
-                </caption>
-                <thead>
-                  <tr>
-                    <th>Method</th>
-                    <th>Camera</th>
-                    <th>Robot</th>
-                    <th>Language</th>
-                    <th>Light</th>
-                    <th>Background</th>
-                    <th>Noise</th>
-                    <th>Layout</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td>OpenVLA</td><td>0.8</td><td>3.5</td><td>23.0</td><td>8.1</td><td>34.8</td><td>15.2</td><td>28.5</td><td>15.6</td></tr>
-                  <tr><td>OpenVLA-OFT</td><td>56.4</td><td>31.9</td><td>79.5</td><td>88.7</td><td>93.3</td><td>75.8</td><td>74.2</td><td>69.6</td></tr>
-                  <tr><td>OpenVLA-OFT_w</td><td>10.4</td><td>38.7</td><td>70.5</td><td>76.8</td><td><strong>93.6</strong></td><td>49.9</td><td>69.9</td><td>55.8</td></tr>
-                  <tr><td>NORA</td><td>2.2</td><td>37.0</td><td>65.1</td><td>45.7</td><td>58.6</td><td>12.8</td><td>62.1</td><td>39.0</td></tr>
-                  <tr><td>WorldVLA</td><td>0.1</td><td>27.9</td><td>41.6</td><td>43.7</td><td>17.1</td><td>10.9</td><td>38.0</td><td>25.0</td></tr>
-                  <tr><td>UniVLA</td><td>1.8</td><td>46.2</td><td>69.6</td><td>69.0</td><td>81.0</td><td>21.2</td><td>31.9</td><td>42.9</td></tr>
-                  <tr><td>π₀</td><td>13.8</td><td>6.0</td><td>58.8</td><td>85.0</td><td>81.4</td><td>79.0</td><td>68.9</td><td>53.6</td></tr>
-                  <tr><td>π₀-Fast</td><td><strong>65.1</strong></td><td>21.6</td><td>61.0</td><td>73.2</td><td>73.2</td><td>74.4</td><td>68.8</td><td>61.6</td></tr>
-                  <tr><td>RIPT-VLA</td><td>55.2</td><td>31.2</td><td>77.6</td><td>88.4</td><td>91.6</td><td>73.5</td><td>74.2</td><td>68.4</td></tr>
-                  <tr><td>Openvla-OFT_m</td><td>55.6</td><td>21.7</td><td>81.0</td><td>92.7</td><td>91.0</td><td>78.6</td><td>68.7</td><td>67.9</td></tr>
-                  <tr class="ours-row">
-                    <td><strong>ABot-M0 (Ours)</strong></td>
-                    <td>60.4</td>
-                    <td><strong>67.9</strong></td>
-                    <td><strong>86.4</strong></td>
-                    <td><strong>96.2</strong></td>
-                    <td>91.6</td>
-                    <td><strong>86.4</strong></td>
-                    <td><strong>82.6</strong></td>
-                    <td><strong>80.5</strong></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- RoboCasa Table -->
-        <div id="robocasa" class="tab-content" style="display: none;">
-          <div class="table-wrapper">
-            <div class="table-container">
-              <table class="results-table">
-                <caption class="table-caption">
-                  RoboCasa GR1 Tabletop Tasks Evaluation Results. A single model was trained for all 24 tasks. Results are reported over 50 rollouts per task.
-                </caption>
-                <thead>
-                  <tr>
-                    <th>Task</th>
-                    <th>GR00T-N1.6</th>
-                    <th>Qwen3GR00T</th>
-                    <th>Qwen3PI</th>
-                    <th>Qwen3OFT</th>
-                    <th>Qwen3FAST</th>
-                    <th class="ours-col">ABot-M0 (Ours)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td>PnPBottleToCabinetClose</td><td>51.5</td><td>46.0</td><td>26.0</td><td>30.0</td><td>38.0</td><td class="ours-cell"><strong>86.0</strong></td></tr>
-                  <tr><td>PnPCanToDrawerClose</td><td>13.0</td><td><strong>80.0</strong></td><td>62.0</td><td>76.0</td><td>44.0</td><td class="ours-cell">74.0</td></tr>
-                  <tr><td>PnPCupToDrawerClose</td><td>8.5</td><td>54.0</td><td>42.0</td><td>44.0</td><td><strong>56.0</strong></td><td class="ours-cell">48.0</td></tr>
-                  <tr><td>PnPMilkToMicrowaveClose</td><td>14.0</td><td>48.0</td><td><strong>50.0</strong></td><td>44.0</td><td>44.0</td><td class="ours-cell">46.0</td></tr>
-                  <tr><td>PnPPotatoToMicrowaveClose</td><td>41.5</td><td>28.0</td><td>42.0</td><td>32.0</td><td>14.0</td><td class="ours-cell"><strong>50.0</strong></td></tr>
-                  <tr><td>PnPWineToCabinetClose</td><td>16.5</td><td>46.0</td><td>32.0</td><td>36.0</td><td>14.0</td><td class="ours-cell"><strong>66.0</strong></td></tr>
-                  <tr><td>PnPNovelFromCuttingboardToBasket</td><td>58.0</td><td>48.0</td><td>40.0</td><td>50.0</td><td>54.0</td><td class="ours-cell"><strong>70.0</strong></td></tr>
-                  <tr><td>PnPNovelFromCuttingboardToCardboardbox</td><td>46.5</td><td>40.0</td><td>46.0</td><td>40.0</td><td>42.0</td><td class="ours-cell"><strong>58.0</strong></td></tr>
-                  <tr><td>PnPNovelFromCuttingboardToPan</td><td>68.5</td><td>68.0</td><td>60.0</td><td>70.0</td><td>58.0</td><td class="ours-cell"><strong>76.0</strong></td></tr>
-                  <tr><td>PnPNovelFromCuttingboardToPot</td><td>65.0</td><td>52.0</td><td>40.0</td><td>54.0</td><td>58.0</td><td class="ours-cell"><strong>66.0</strong></td></tr>
-                  <tr><td>PnPNovelFromCuttingboardToTieredbasket</td><td>46.5</td><td><strong>56.0</strong></td><td>44.0</td><td>38.0</td><td>40.0</td><td class="ours-cell">38.0</td></tr>
-                  <tr><td>PnPNovelFromPlacematToBasket</td><td><strong>58.5</strong></td><td>42.0</td><td>44.0</td><td>32.0</td><td>36.0</td><td class="ours-cell">52.0</td></tr>
-                  <tr><td>PnPNovelFromPlacematToBowl</td><td>57.5</td><td>44.0</td><td>52.0</td><td>58.0</td><td>38.0</td><td class="ours-cell"><strong>66.0</strong></td></tr>
-                  <tr><td>PnPNovelFromPlacematToPlate</td><td><strong>63.0</strong></td><td>48.0</td><td>50.0</td><td>52.0</td><td>42.0</td><td class="ours-cell">60.0</td></tr>
-                  <tr><td>PnPNovelFromPlacematToTieredshelf</td><td><strong>28.5</strong></td><td>18.0</td><td>28.0</td><td>24.0</td><td>18.0</td><td class="ours-cell">26.0</td></tr>
-                  <tr><td>PnPNovelFromPlateToBowl</td><td>57.0</td><td><strong>60.0</strong></td><td>52.0</td><td><strong>60.0</strong></td><td>52.0</td><td class="ours-cell">54.0</td></tr>
-                  <tr><td>PnPNovelFromPlateToCardboardbox</td><td>43.5</td><td><strong>50.0</strong></td><td>40.0</td><td><strong>50.0</strong></td><td>30.0</td><td class="ours-cell">48.0</td></tr>
-                  <tr><td>PnPNovelFromPlateToPan</td><td>51.0</td><td>54.0</td><td>36.0</td><td><strong>66.0</strong></td><td>48.0</td><td class="ours-cell"><strong>66.0</strong></td></tr>
-                  <tr><td>PnPNovelFromPlateToPlate</td><td><strong>78.7</strong></td><td>70.0</td><td>48.0</td><td>68.0</td><td>50.0</td><td class="ours-cell">64.0</td></tr>
-                  <tr><td>PnPNovelFromTrayToCardboardbox</td><td>51.5</td><td>38.0</td><td>34.0</td><td>44.0</td><td>28.0</td><td class="ours-cell"><strong>54.0</strong></td></tr>
-                  <tr><td>PnPNovelFromTrayToPlate</td><td><strong>71.0</strong></td><td>56.0</td><td>64.0</td><td>56.0</td><td>34.0</td><td class="ours-cell">68.0</td></tr>
-                  <tr><td>PnPNovelFromTrayToPot</td><td><strong>64.5</strong></td><td>50.0</td><td>44.0</td><td>62.0</td><td>46.0</td><td class="ours-cell">64.0</td></tr>
-                  <tr><td>PnPNovelFromTrayToTieredbasket</td><td>57.0</td><td>36.0</td><td>50.0</td><td>54.0</td><td>36.0</td><td class="ours-cell"><strong>60.0</strong></td></tr>
-                  <tr><td>PnPNovelFromTrayToTieredshelf</td><td>31.5</td><td>16.0</td><td>28.0</td><td>30.0</td><td>16.0</td><td class="ours-cell"><strong>38.0</strong></td></tr>
-                  <tr class="avg-row">
-                    <td><strong>Average</strong></td>
-                    <td>47.6</td>
-                    <td>47.8</td>
-                    <td>43.9</td>
-                    <td>48.8</td>
-                    <td>39.0</td>
-                    <td class="ours-cell"><strong>58.3</strong></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- RoboTwin 2.0 Table -->
-        <div id="robotwin" class="tab-content" style="display: none;">
-          <div class="table-wrapper">
-            <div class="table-container">
-              <table class="results-table">
-                <caption class="table-caption">
-                  Evaluation on RoboTwin 2.0 Simulation (Clean vs Randomized, 50+ tasks).
-                </caption>
-                <thead>
-                  <tr>
-                    <th>Simulation Task</th>
-                    <th colspan="2">π₀.₅</th>
-                    <th colspan="2">X-VLA</th>
-                    <th colspan="2" class="ours-col">ABot-M0 (Ours)</th>
-                  </tr>
-                  <tr>
-                    <th></th>
-                    <th>Clean</th>
-                    <th>Rand.</th>
-                    <th>Clean</th>
-                    <th>Rand.</th>
-                    <th class="ours-col">Clean</th>
-                    <th class="ours-col">Rand.</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td style="font-style: italic;">Place Dual Shoes</td><td>12</td><td>7</td><td>79</td><td><strong>88</strong></td><td class="ours-cell">75</td><td class="ours-cell">79</td></tr>
-                  <tr><td style="font-style: italic;">Move Stapler Pad</td><td>16</td><td>18</td><td><strong>78</strong></td><td>73</td><td class="ours-cell">49</td><td class="ours-cell">72</td></tr>
-                  <tr><td style="font-style: italic;">Stack Blocks Two</td><td>48</td><td>56</td><td>92</td><td>87</td><td class="ours-cell"><strong>100</strong></td><td class="ours-cell">98</td></tr>
-                  <tr><td style="font-style: italic;">Scan Object</td><td>42</td><td>38</td><td>14</td><td>36</td><td class="ours-cell"><strong>100</strong></td><td class="ours-cell">80</td></tr>
-                  <tr><td style="font-style: italic;">Place Object Stand</td><td>74</td><td>65</td><td>86</td><td>88</td><td class="ours-cell"><strong>100</strong></td><td class="ours-cell">94</td></tr>
-                  <tr><td style="font-style: italic;">Place Fan</td><td>25</td><td>36</td><td>80</td><td>75</td><td class="ours-cell">84</td><td class="ours-cell"><strong>91</strong></td></tr>
-                  <tr><td style="font-style: italic;">Move Pillbottle Pad</td><td>33</td><td>29</td><td>73</td><td>71</td><td class="ours-cell">93</td><td class="ours-cell"><strong>100</strong></td></tr>
-                  <tr><td style="font-style: italic;">Pick Dual Bottles</td><td>10</td><td>6</td><td>47</td><td>36</td><td class="ours-cell">77</td><td class="ours-cell"><strong>100</strong></td></tr>
-                  <tr><td style="font-style: italic;">Blocks Ranking Rgb</td><td>43</td><td>35</td><td>83</td><td>83</td><td class="ours-cell">68</td><td class="ours-cell"><strong>85</strong></td></tr>
-                  <tr><td style="font-style: italic;">......(50 tasks)</td><td>...</td><td>...</td><td>...</td><td>...</td><td class="ours-cell">...</td><td class="ours-cell">...</td></tr>
-                  <tr><td style="font-style: italic;">Turn Switch</td><td>5</td><td>6</td><td>40</td><td>61</td><td class="ours-cell">52</td><td class="ours-cell"><strong>81</strong></td></tr>
-                  <tr><td style="font-style: italic;">Pick Diverse Bottles</td><td>5</td><td>3</td><td>58</td><td>36</td><td class="ours-cell">70</td><td class="ours-cell"><strong>93</strong></td></tr>
-                  <tr><td style="font-style: italic;">Place Bread Basket</td><td>48</td><td>56</td><td>81</td><td>71</td><td class="ours-cell"><strong>91</strong></td><td class="ours-cell">87</td></tr>
-                  <tr><td style="font-style: italic;">Stack Blocks Three</td><td>15</td><td>16</td><td>6</td><td>10</td><td class="ours-cell"><strong>72</strong></td><td class="ours-cell">49</td></tr>
-                  <tr><td style="font-style: italic;">Put Bottles Dustbin</td><td>12</td><td>9</td><td>74</td><td><strong>77</strong></td><td class="ours-cell">74</td><td class="ours-cell">70</td></tr>
-                  <tr><td style="font-style: italic;">Place Can Basket</td><td>19</td><td>25</td><td>49</td><td>52</td><td class="ours-cell">45</td><td class="ours-cell"><strong>66</strong></td></tr>
-                  <tr><td style="font-style: italic;">Stamp Seal</td><td>36</td><td>23</td><td>76</td><td><strong>82</strong></td><td class="ours-cell">76</td><td class="ours-cell">76</td></tr>
-                  <tr><td style="font-style: italic;">Handover Block</td><td>18</td><td>19</td><td>73</td><td>37</td><td class="ours-cell"><strong>93</strong></td><td class="ours-cell">69</td></tr>
-                  <tr><td style="font-style: italic;">Stack Bowls Three</td><td>33</td><td>35</td><td>76</td><td>86</td><td class="ours-cell"><strong>100</strong></td><td class="ours-cell">88</td></tr>
-                  <tr><td style="font-style: italic;">Place Object Basket</td><td>43</td><td>36</td><td>44</td><td>39</td><td class="ours-cell"><strong>97</strong></td><td class="ours-cell">95</td></tr>
-                  <tr><td style="font-style: italic;">Open Microwave</td><td>35</td><td>37</td><td>79</td><td>71</td><td class="ours-cell"><strong>93</strong></td><td class="ours-cell">49</td></tr>
-                  <tr class="avg-row">
-                    <td><strong>Average</strong></td>
-                    <td>42.98</td>
-                    <td>43.84</td>
-                    <td>72.80</td>
-                    <td>72.84</td>
-                    <td class="ours-cell">80.42</td>
-                    <td class="ours-cell"><strong>81.16</strong></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Dataset Video Cases -->
-  <section class="section" id="dataset-videos">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3">Video</h2>
+      <h2 class="title is-3" style="text-align: center; font-weight: 700;">Results</h2>
       <p class="content has-text-justified mb-4">
-        We showcase representative rollouts from the four benchmark suites used to evaluate <b>ABot-M0</b>.
+        ABot-M0.5 achieves strong performance on mobile manipulation, fine-grained manipulation, and real-robot deployment.
       </p>
 
-      <!-- LIBERO -->
-      <div class="dataset-block">
-        <h3 class="title is-4 dataset-title">LIBERO</h3>
-        <div class="dataset-grid">
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/libero/libero_spatial.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-          
-            </div>
-          </div>
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/libero/libero_object.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-          
-            </div>
-          </div>
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/libero/libero_goal.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-         
-            </div>
-          </div>
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/libero/libero_10.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-            
-            </div>
-          </div>
+      <figure class="image" style="max-width: 760px; margin: 0 auto;">
+        <img src="./m0.5/static/image/bench.png" alt="Benchmark overview">
+      </figure>
+      <p class="video-caption">Benchmark overview of ABot-M0.5.</p>
+
+      <h3 class="title is-4">RoboCasa365 (Mobile Manipulation)</h3>
+      <p class="content has-text-justified mb-3">
+        Under pretraining evaluation, ABot-M0.5 reaches <b>46.6%</b> average success (Atomic-Seen 75.9%, Composite-Seen 38.3%), outperforming GR00T-N1.5 (23.9%), RLDX-1 (36.0%), and Qwen-RobotManip (35.9%). In the Target 100% setting, it achieves <b>54.2%</b> average success.
+      </p>
+      <figure class="image" style="max-width: 1000px; margin: 0 auto;">
+        <img src="./m0.5/static/image/02_robocasa.png" alt="RoboCasa365 results">
+      </figure>
+      <p class="video-caption">Results on RoboCasa365 mobile manipulation.</p>
+
+      <h3 class="title is-4" style="margin-top: 3rem;">RoboTwin 2.0</h3>
+      <p class="content has-text-justified mb-3">
+        ABot-M0.5 reaches <b>94.0%</b> on Clean (Easy) and <b>94.2%</b> on Randomized (Hard), for an average of <b>94.10%</b>.
+      </p>
+      <figure class="image" style="max-width: 1000px; margin: 0 auto;">
+        <img src="./m0.5/static/image/03_robotwin.png" alt="RoboTwin 2.0 results">
+      </figure>
+      <p class="video-caption">Results on RoboTwin 2.0.</p>
+
+      <h3 class="title is-4" style="margin-top: 3rem;">LIBERO & LIBERO-Plus</h3>
+      <p class="content has-text-justified mb-3">
+        On LIBERO, ABot-M0.5 achieves <b>99.4%</b> average success across Spatial / Object / Goal / Long. On LIBERO-Plus zero-shot robustness, it reaches <b>83.4%</b> total average under camera, robot, light, and noise perturbations.
+      </p>
+      <figure class="image" style="max-width: 1000px; margin: 0 auto;">
+        <img src="./m0.5/static/image/04_libero.png" alt="LIBERO results">
+      </figure>
+      <p class="video-caption">Results on LIBERO / LIBERO-Plus.</p>
+
+      <h3 class="title is-4" style="margin-top: 3rem;">Real-Robot Deployment</h3>
+      <p class="content has-text-justified mb-3">
+        Deployed on an Agilex Piper (6-DoF) mobile manipulation platform with only <b>50</b> real demonstrations per task. ABot-M0.5 achieves strong fine control (Peg Cylinder: 70% success / 96% process score) and long-horizon multi-stage tasks (Organize Plate 70%, Arrange Fruits 80%, Cup Stacking 80%, Arrange Flower 60%).
+      </p>
+      <figure class="image" style="max-width: 1000px; margin: 0 auto;">
+        <img src="./m0.5/static/image/05_real.png" alt="Real robot results">
+      </figure>
+      <p class="video-caption">Real-world mobile manipulation deployment.</p>
+
+      <h3 class="title is-4" style="margin-top: 3rem;">Real-Robot Demos</h3>
+      <p class="content has-text-justified mb-4">
+        Three real-world mobile manipulation demos on an Agilex Piper platform.
+      </p>
+      <div class="columns is-multiline" style="margin-top: 0.5rem;">
+        <div class="column is-one-third">
+          <figure class="image">
+            <img src="./m0.5/static/image/hang_cup_global_view.gif" alt="Cup Stacking demo" style="width: 100%; border-radius: 10px;">
+          </figure>
+          <p class="video-caption">Cup Stacking</p>
+        </div>
+        <div class="column is-one-third">
+          <figure class="image">
+            <img src="./m0.5/static/image/fruits_global_view.gif" alt="Arrange Fruits demo" style="width: 100%; border-radius: 10px;">
+          </figure>
+          <p class="video-caption">Arrange Fruits</p>
+        </div>
+        <div class="column is-one-third">
+          <figure class="image">
+            <img src="./m0.5/static/image/flower_global_view.gif" alt="Arrange Flower demo" style="width: 100%; border-radius: 10px;">
+          </figure>
+          <p class="video-caption">Arrange Flower</p>
         </div>
       </div>
-
-      <!-- LIBERO-Plus -->
-      <div class="dataset-block">
-        <h3 class="title is-4 dataset-title">LIBERO-Plus</h3>
-        <div class="dataset-grid">
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/libero-plus/plus_spatial.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-             
-            </div>
-          </div>
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/libero-plus/plus_object.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-             
-            </div>
-          </div>
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/libero-plus/plus_goal.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-            
-            </div>
-          </div>
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/libero-plus/plus_10.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-            
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- RoboCasa -->
-      <div class="dataset-block">
-        <h3 class="title is-4 dataset-title">RoboCasa</h3>
-        <div class="dataset-grid">
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/robocasa/robocasa_casa1.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-          
-            </div>
-          </div>
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/robocasa/robocasa_case2.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-             
-            </div>
-          </div>
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/robocasa/robocasa_case3.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-          
-            </div>
-          </div>
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/robocasa/robocasa_case4.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-  
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- RoboTwin 2.0 -->
-      <div class="dataset-block">
-        <h3 class="title is-4 dataset-title">RoboTwin 2.0</h3>
-        <div class="dataset-grid">
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/robotwin/robotwin1.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-          
-            </div>
-          </div>
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/robotwin/robotwin2.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-         
-            </div>
-          </div>
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/robotwin/robotwin3.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-
-            </div>
-          </div>
-          <div class="dataset-card">
-            <div class="dataset-card-inner">
-              <video class="dataset-video" src="./static/videos/robotwin/robotwin4.mp4" controls muted playsinline autoplay loop preload="metadata"></video>
-           
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
   </section>
 
-  <style>
-    /* Hero section adjustments - text positioned lower with reduced spacing */
-    .hero-overlay-content {
-      align-items: flex-end !important;
-      justify-content: flex-start !important;
-      padding-bottom: 8vh !important;
-      padding-left: var(--spacing-3xl) !important;
-    }
-    .hero-content {
-      text-align: left !important;
-      max-width: 1100px !important;
-      padding: var(--spacing-lg) !important;
-    }
-    .hero-meta {
-      justify-content: flex-start !important;
-    }
-    .hero-links {
-      justify-content: flex-start !important;
-    }
-    .hero-title {
-      font-size: clamp(2.25rem, 4.5vw, 3.5rem) !important;
-      line-height: 1.0 !important;
-      margin-bottom: var(--spacing-md) !important;
-    }
-    .hero-meta {
-      margin-bottom: var(--spacing-md) !important;
-      gap: var(--spacing-sm) !important;
-    }
-    .hero-links {
-      gap: var(--spacing-xs) !important;
-    }
-    
-    /* Table header color fix - ensure all headers are white and visible */
-    .results-table th,
-    .results-table thead th,
-    table th,
-    table thead th {
-      color: #fff !important;
-      font-weight: 700 !important;
-    }
-    
-    /* Page background styling */
-    #page-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-    #page-background spline-viewer {
-      width: 100% !important;
-      height: 100% !important;
-      min-height: 100vh;
-    }
-    /* Premium design overrides - minimal inline styles */
-    /* All major styling moved to premium.css for consistency */
-    .table-container {
-      overflow-x: auto;
-      border-radius: 12px;
-    }
-    
-    /* Table Styling */
-    .results-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      font-size: 0.9rem;
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .table-caption {
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      text-align: left;
-      font-size: 1.05rem;
-      color: #e0e0e0;
-      padding: 0 0.5rem;
-    }
-    .results-table thead {
-      background: rgba(255, 255, 255, 0.03);
-    }
-    .results-table th {
-      padding: 1rem 0.75rem;
-      text-align: left;
-      font-weight: 700 !important;
-      font-size: 1.05rem !important;
-      color: #fff !important;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .results-table th:first-child {
-      border-top-left-radius: 12px;
-    }
-    .results-table th:last-child {
-      border-top-right-radius: 12px;
-    }
-    .results-table th:not(:first-child) {
-      text-align: center;
-    }
-    .results-table tbody tr {
-      transition: all 0.2s ease;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .results-table tbody tr:hover {
-      background: rgba(255, 255, 255, 0.02);
-    }
-    .results-table td {
-      padding: 0.75rem;
-      color: #fff;
-      text-align: left;
-      border-right: 1px solid rgba(255, 255, 255, 0.05);
-      font-size: 1rem;
-      font-weight: 500;
-    }
-    .results-table td:not(:first-child) {
-      text-align: center;
-    }
-    .results-table tbody tr:last-child td:first-child {
-      border-bottom-left-radius: 12px;
-    }
-    .results-table tbody tr:last-child td:last-child {
-      border-bottom-right-radius: 12px;
-    }
-    /* Normalize strong tags inside body so numbers are not bold */
-    .results-table tbody strong {
-      font-weight: 500;
-      color: #fff;
-    }
-    
-    /* Ours Column Styling - Subtle highlight */
-    .ours-col {
-      background: rgba(255, 165, 0, 0.08) !important;
-      border-left: 1px solid rgba(255, 165, 0, 0.2);
-      border-right: 1px solid rgba(255, 165, 0, 0.2);
-    }
-    .ours-cell {
-      background: rgba(255, 165, 0, 0.06) !important;
-      font-weight: 400;
-      color: #fff !important;
-    }
-    .ours-row {
-      background: rgba(255, 165, 0, 0.1) !important;
-      border-top: 1px solid rgba(255, 165, 0, 0.3);
-    }
-    .ours-row td {
-      color: #fff;
-    }
-    .ours-row td:first-child strong {
-      font-weight: 500;
-    }
-    .avg-row {
-      background: rgba(255, 255, 255, 0.03) !important;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .avg-row td {
-      color: #fff;
-    }
-    
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .results-tabs {
-        flex-wrap: wrap;
-        gap: 0.25rem;
-      }
-      .tab-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
-      }
-      .table-wrapper {
-        padding: 1rem;
-      }
-      .results-table {
-        font-size: 0.9rem;
-      }
-      .results-table th {
-        font-size: 0.85rem;
-        font-weight: 600;
-      }
-      .results-table td {
-        font-size: 0.9rem;
-        font-weight: 500;
-        padding: 0.5rem 0.4rem;
-      }
-    }
-  </style>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const tabButtons = document.querySelectorAll('.tab-btn');
-      const tabContents = document.querySelectorAll('.tab-content');
-      
-      tabButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const targetTab = this.getAttribute('data-tab');
-          
-          // Remove active class from all tabs
-          tabButtons.forEach(b => b.classList.remove('is-active'));
-          // Hide all tab contents
-          tabContents.forEach(content => {
-            content.style.display = 'none';
-            content.classList.remove('is-active');
-          });
-          
-          // Add active class to clicked tab
-          this.classList.add('is-active');
-          // Show target tab content
-          const targetContent = document.getElementById(targetTab);
-          if (targetContent) {
-            targetContent.style.display = 'block';
-            targetContent.classList.add('is-active');
-          }
-        });
-      });
-    });
-  </script>
-
-<section class="section" id="author">
+  <section class="section" id="author">
     <div class="container is-max-desktop">
         <div class="column is-full">
           <h2 class="title is-3">Author Team</h2>
           <p class="content has-text-justified mb-4">
             Author contributions in the following areas are as follows:
             <ul class="content">
-              <li>Data Collection & Analysis: Yandan Yang, Haoyun Liu, Ronghan Chen, Yuzhi Chen, Dekang Qi</li>
-              <li>Data Standardization: Yandan Yang, Tong lin, Xinyuan Chang</li>
-              <li>Data Pipeline: Tong Lin, Shuang Zeng, Dongjie Huo</li>
-              <li>Model Architecture: Shuang Zeng, Junjin Xiao</li>
-              <li>Training: Shuang Zeng, Tong Lin, Junjin Xiao</li>
-              <li>Evaluation: Junjin Xiao, Shuang Zeng, Tong Lin</li>
-              <li>Project Lead: Xinyuan Chang, Feng Xiong</li>
-              <li>Advisor: Mu Xu†, Zhiheng Ma, Xing Wei</li>
+              <li><b>Data Collection & Standardization:</b> Yandan Yang, Ronghan Chen, Yuzhi Chen, Haoyun Liu, Dekang Qi</li>
+              <li><b>Model & Training:</b> Ronghan Chen, Zuojin Tang, Tong Lin, Yandan Yang</li>
+              <li><b>Post-Training & Evaluation:</b> Zuojin Tang, Tianlun Li, Haoning Wu, Ronghan Chen, Tong Lin, Mingxin Wang, Bin Hu</li>
+              <li><b>Real-Robot Experiments & Deployment:</b> Dongjie Huo, Lulu Zheng, Botai Yuan</li>
+              <li><b>Writing:</b> Yandan Yang, Ronghan Chen, Zuojin Tang, Dekang Qi, Haoyun Liu</li>
+              <li><b>Challenge Submission:</b> Yanqing Zhu<sup>&#8227;</sup>, Wei Mei, Yuze Xuan, Haolong Yang, Dongjie Huo</li>
+              <li><b>Project Lead:</b> Xinyuan Chang</li>
+              <li><b>Advisor:</b> Mu Xu<sup>&dagger;</sup>, Zhiheng Ma</li>
             </ul>
           </p>
-
-          
+          <p class="content has-text-justified" style="opacity: 0.75; font-size: 0.85rem;">
+            <sup>&dagger;</sup> Corresponding Author: xumu.xm@alibaba-inc.com &nbsp;&middot;&nbsp;
+            <sup>&#8227;</sup> Lead for Challenge Submission &nbsp;&middot;&nbsp; AMAP CV Lab
+          </p>
         </div>
     </div>
-    <!--/ Abstract. -->
   </section>
 
-<section class="section" id="BibTeX">
+  <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
-        <h2 class="title is-3">Citation</h2>
-        <p class="content has-text-justified mb-4">
-            If you find our work helpful, please cite us:
-        </p>
-        <div class="bibtex-container">
-            <pre><code id="bibtex-code">
-  @article{yang2026abot,
-  title={ABot-M0: VLA Foundation Model for Robotic Manipulation with Action Manifold Learning},
-  author={Yang, Yandan and Zeng, Shuang and Lin, Tong and Chang, Xinyuan and Qi, Dekang and Xiao, Junjin and Liu, Haoyun and Chen, Ronghan and Chen, Yuzhi and Huo, Dongjie and others},
-  journal={arXiv preprint arXiv:2602.11236},
+      <h2 class="title is-3">Citation</h2>
+      <p class="content has-text-justified mb-4">
+        If you find our work helpful, please cite:
+      </p>
+      <div class="bibtex-container">
+        <pre><code id="bibtex-code">@article{chen2026abotm05,
+  title={ABot-M0.5: Unified Mobility-and-Manipulation World Action Model},
+  author={Chen, Ronghan and Yang, Yandan and Tang, Zuojin and Huo, Dongjie and Lin, Tong and Wu, Haoning and Liu, Haoyun and Chen, Yuzhi and Zheng, Lulu and Yuan, Botai and Li, Tianlun and Wang, Mingxin and Qi, Dekang and Hu, Bin and Mei, Wei and Xuan, Yuze and Yang, Haolong and Zhu, Yanqing and Xu, Mu and Ma, Zhiheng and Chang, Xinyuan},
+  journal={arXiv preprint arXiv:2607.00678},
   year={2026}
-}
-            </code></pre>
-            <button onclick="copyToClipboard()" class="copy-button">
-                <!-- 粘贴图标，可以使用Font Awesome 图标库 -->
-                <i class="fa fa-copy" aria-hidden="true"></i>
-            </button>
-        </div>
-        <p class="content has-text-justified mb-4">
-            Thank you!
-        </p>
+}</code></pre>
+        <button onclick="copyToClipboard()" class="copy-button">
+          <i class="fa fa-copy" aria-hidden="true"></i>
+        </button>
+      </div>
     </div>
-</section>
-
-<!-- 引入Font Awesome样式表 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-<script>
-function copyToClipboard() {
-    var copyText = document.getElementById("bibtex-code").innerText;
-    navigator.clipboard.writeText(copyText).then(function() {
-        alert("Copied to clipboard!");
-    }, function(err) {
-        console.error('Unable to copy text:', err);
-    });
-}
-</script>
-
+  </section>
 
   <footer class="footer">
     <div class="container">
-      <!-- <div class="content has-text-centered">
-        <p>We borrowed the page template from <a href="https://nerfies.github.io/"><span class="dnerf">Nerfies</span></a>.</p>
-      </div> -->
+      <div class="content has-text-centered" style="opacity: 0.6;">
+        <p>ABot-M0.5 · AMAP CV Lab</p>
+      </div>
     </div>
   </footer>
 
-  <!-- Dataset Video Carousel JavaScript -->
-  <script src="./static/js/carousel.js"></script>
-  
-  <!-- Apple-style button glow effect -->
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Add mouse tracking glow effect to all dark buttons
+    function copyToClipboard() {
+      var copyText = document.getElementById("bibtex-code").innerText;
+      navigator.clipboard.writeText(copyText).then(function () {
+        alert("Copied to clipboard!");
+      }, function (err) {
+        console.error('Unable to copy text:', err);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
       const buttons = document.querySelectorAll('.button.is-dark');
-      
       buttons.forEach(button => {
-        button.addEventListener('mousemove', function(e) {
+        button.addEventListener('mousemove', function (e) {
           const rect = button.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          
-          // Update the position of the glow effect
-          button.style.setProperty('--mouse-x', x + 'px');
-          button.style.setProperty('--mouse-y', y + 'px');
-          
-          // Add active class for gradient border
+          button.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+          button.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
           button.classList.add('glow-active');
         });
-        
-        button.addEventListener('mouseleave', function() {
-          // Remove active class when mouse leaves
+        button.addEventListener('mouseleave', function () {
           button.classList.remove('glow-active');
-        });
-        
-        button.addEventListener('mouseenter', function(e) {
-          const rect = button.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          
-          button.style.setProperty('--mouse-x', x + 'px');
-          button.style.setProperty('--mouse-y', y + 'px');
         });
       });
 
-      // Control page background Spline viewer visibility
       const pageBackground = document.getElementById('page-background');
       const heroSection = document.querySelector('.hero-video-section');
-      
       function updateBackgroundVisibility() {
-        if (!heroSection || !pageBackground) return;
-        
-        const heroRect = heroSection.getBoundingClientRect();
-        const heroBottom = heroRect.bottom;
-        const scrollY = window.scrollY || window.pageYOffset;
-        const windowHeight = window.innerHeight;
-        
-        // Show background when scrolled past hero section
-        if (scrollY > heroBottom - windowHeight * 0.5) {
-          pageBackground.style.opacity = '1';
-        } else {
-          pageBackground.style.opacity = '0';
-        }
+        if (!pageBackground) return;
+        pageBackground.style.opacity = '1';
       }
-      
-      // Update on scroll with throttling
       let ticking = false;
-      function handleScroll() {
+      window.addEventListener('scroll', function () {
         if (!ticking) {
-          window.requestAnimationFrame(function() {
+          window.requestAnimationFrame(function () {
             updateBackgroundVisibility();
             ticking = false;
           });
           ticking = true;
         }
-      }
-      
-      window.addEventListener('scroll', handleScroll, { passive: true });
+      }, { passive: true });
       window.addEventListener('resize', updateBackgroundVisibility);
-      
-      // Initial check
       setTimeout(updateBackgroundVisibility, 100);
     });
   </script>
-
 </body>
 
 </html>
